@@ -7,7 +7,7 @@ export default function Login({ hidden, onShowRegister }) {
   const schema = yup.object().shape({
     pseudo: yup
       .string()
-      .required("Le pseudo est obligatoire")
+      .required("Le pseudo/e-mail est obligatoire")
       .min(8, "Le pseudo doit contenir au moins 8 caractères"),
     password: yup
       .string()
@@ -47,12 +47,12 @@ export default function Login({ hidden, onShowRegister }) {
 
         {/* PSEUDO */}
         <label className="font-montserrat font-bold text-[#fbf9f4] block my-[10px]">
-          Pseudo
+          Pseudo/E-mail
         </label>
         <input
           type="text"
-          placeholder="Saisissez votre pseudo..."
-          {...register("pseudo")}
+          placeholder="Saisissez votre pseudo/e-mail..."
+          {...register("pseudo", "e-mail")}
           className="w-full h-12 bg-[#e9e4da] shadow-[0_5px_5px_rgba(0,0,0,0.5)] mb-3 px-3 rounded-full font-montserrat text-base text-[#111827] placeholder-[#111827] outline-none"
         />
         {errors.pseudo && (

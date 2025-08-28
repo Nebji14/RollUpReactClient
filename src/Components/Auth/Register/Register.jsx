@@ -53,9 +53,20 @@ export default function Register({ active, onBack }) {
 
   const selected = watch("niveau");
 
-  const onSubmit = (data) => {
-    console.log("✅ Données envoyées :", data);
-  };
+  async function submit(values) {
+    try {
+      const responseFromBackend = await signUp(values);
+      if (responseFromBackend.message !== "Déjà inscrit") {
+        toast.success(responseFromBackend.message);
+        navigate("/login");
+        reset(defaultValues);
+      } else {
+        toast.error(responseFromBackend.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -66,7 +77,7 @@ export default function Register({ active, onBack }) {
       }`}
     >
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(submit)}
         className="flex flex-col sm:space-y-2 space-y-1"
       >
         <h2 className="font-cinzel text-[2em] font-bold cursor-default flex justify-center text-[#31255b] mt-6 mb-4 sm:my-[clamp(5px,1vh,15px)]">
