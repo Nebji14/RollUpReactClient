@@ -1,4 +1,4 @@
-import { variants } from "../Constants";
+import { variants } from "../../Constants";
 
 export default function Button({ id, color, text, className = "", ...props }) {
   return (

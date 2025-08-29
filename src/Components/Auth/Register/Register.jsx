@@ -2,11 +2,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import toast from "react-hot-toast";
+import { signUp } from "../../../api/auth.api";
+import { useNavigate } from "react-router-dom";
 
 export default function Register({ active, onBack }) {
   const [open, setOpen] = useState(false);
-
-  // ✅ Schéma Yup
+  const navigate = useNavigate();
+  // Schéma Yup
   const schema = yup.object().shape({
     nom: yup.string().required("Le nom est obligatoire"),
     pseudo: yup.string().required("Le pseudo est obligatoire"),
@@ -14,7 +17,8 @@ export default function Register({ active, onBack }) {
     email: yup
       .string()
       .email("Email invalide")
-      .required("L'email est obligatoire"),
+      .required("L'email est obligatoire")
+      .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Format email non valide"),
     password: yup
       .string()
       .min(6, "Le mot de passe doit contenir au moins 6 caractères")
@@ -30,25 +34,27 @@ export default function Register({ active, onBack }) {
       .boolean()
       .oneOf([true], "Vous devez accepter le traitement de vos informations"),
   });
+  const defaultValues = {
+    nom: "",
+    pseudo: "",
+    niveau: "Débutant",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    consent: false,
+  };
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      nom: "",
-      pseudo: "",
-      niveau: "Débutant",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      consent: false,
-    },
+    defaultValues,
   });
 
   const selected = watch("niveau");
@@ -58,7 +64,7 @@ export default function Register({ active, onBack }) {
       const responseFromBackend = await signUp(values);
       if (responseFromBackend.message !== "Déjà inscrit") {
         toast.success(responseFromBackend.message);
-        navigate("/login");
+        navigate("/");
         reset(defaultValues);
       } else {
         toast.error(responseFromBackend.message);
@@ -246,6 +252,7 @@ export default function Register({ active, onBack }) {
         <div className="flex justify-center gap-[clamp(8px,1.5vh,20px)] mt-2 mb-2 sm:mt-[clamp(10px,2vh,30px)]">
           <button
             type="submit"
+            onClick={onBack}
             className="w-[120px] h-12 bg-[#3e3a4d] text-[#f2eee8] font-bold rounded-full shadow-[0_5px_5px_rgba(0,0,0,0.5)] hover:text-[#f3cc7a] transition"
           >
             Créer mon compte
