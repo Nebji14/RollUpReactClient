@@ -1,14 +1,19 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Login({ hidden, onShowRegister }) {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  // Schéma Yup
   const schema = yup.object().shape({
     pseudo: yup
       .string()
       .required("Le pseudo/e-mail est obligatoire")
-      .min(8, "Le pseudo doit contenir au moins 8 caractères"),
+      .min(5, "Le pseudo doit contenir au moins 5 caractères"),
     password: yup
       .string()
       .required("Le mot de passe est obligatoire")
@@ -28,9 +33,32 @@ export default function Login({ hidden, onShowRegister }) {
     },
   });
 
-  const onSubmit = (data) => {
-    console.log("✅ Login data :", data);
-  };
+  async function submit(values) {
+    // console.log(values);
+    try {
+      const response = await fetch("http://localhost:5000/user/login", {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const responseFromBackend = await response.json();
+      console.log(responseFromBackend);
+
+      if (response.ok) {
+        toast.success("Bien connecté");
+        login(responseFromBackend.user);
+
+        navigate("/Home");
+        reset(defaultValues);
+      } else {
+        toast.error(responseFromBackend.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div
@@ -40,7 +68,7 @@ export default function Login({ hidden, onShowRegister }) {
           : "opacity-100 translate-y-0 z-[2]"
       }`}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(submit)}>
         <h1 className="font-cinzel text-[2em] font-bold cursor-default flex justify-center my-[40px] text-[#f3cc7a]">
           Connexion
         </h1>

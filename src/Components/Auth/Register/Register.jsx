@@ -12,7 +12,10 @@ export default function Register({ active, onBack }) {
   // Schéma Yup
   const schema = yup.object().shape({
     nom: yup.string().required("Le nom est obligatoire"),
-    pseudo: yup.string().required("Le pseudo est obligatoire"),
+    pseudo: yup
+      .string()
+      .min(5, "Le pseudo doit contenir au moins 5 caractères")
+      .required("Le pseudo est obligatoire"),
     niveau: yup.string().oneOf(["Débutant", "Intermédiaire", "Expert"]),
     email: yup
       .string()
@@ -21,8 +24,8 @@ export default function Register({ active, onBack }) {
       .matches(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Format email non valide"),
     password: yup
       .string()
-      .min(6, "Le mot de passe doit contenir au moins 6 caractères")
-      .required("Le mot de passe est obligatoire"),
+      .required("Le mot de passe est obligatoire")
+      .min(8, "Le mot de passe doit contenir au moins 8 caractères"),
     confirmPassword: yup
       .string()
       .oneOf(
