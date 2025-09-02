@@ -6,24 +6,31 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Bounds } from "@react-three/drei";
 import Button from "../Components/Common/Button";
 
+// ============================
+// Composant InteractiveD20
+// - Gère le modèle 3D du dé
+// - Animation d’intro (rotation automatique)
+// - Interactions utilisateur (drag souris ou tactile)
+// - Inertie quand on relâche le dé
+// ============================
 function InteractiveD20() {
   const modelRef = useRef();
   const [dragging, setDragging] = useState(false);
   const [lastPos, setLastPos] = useState({ x: 0, y: 0 });
   const velocity = useRef({ x: 0, y: 0 });
 
-  // état pour l'animation d'intro
   const [introDone, setIntroDone] = useState(false);
   const startTime = useRef(null);
 
-  // détecter si l’appareil est tactile
+  // Détection du type d’appareil (desktop ou tactile)
   const isTouchDevice =
     typeof window !== "undefined" && "ontouchstart" in window;
 
+  // Gestion des animations avec React Three Fiber
   useFrame((state) => {
     if (!modelRef.current) return;
 
-    // Animation d'intro
+    // Animation d’introduction (rotation automatique au chargement)
     if (!introDone) {
       if (startTime.current === null)
         startTime.current = state.clock.elapsedTime;
@@ -34,27 +41,26 @@ function InteractiveD20() {
 
       modelRef.current.rotation.y = progress * Math.PI * 2;
 
-      if (progress >= 1) {
-        setIntroDone(true);
-      }
+      if (progress >= 1) setIntroDone(true);
       return;
     }
 
-    // Inertie si pas de drag
+    // Inertie : le dé continue à tourner légèrement après un drag
     if (!dragging) {
       modelRef.current.rotation.y += velocity.current.x;
       modelRef.current.rotation.x += velocity.current.y;
 
-      velocity.current.x *= 0.95;
+      velocity.current.x *= 0.95; // réduction progressive de la vitesse
       velocity.current.y *= 0.95;
     }
   });
 
   return (
     <group>
-      {/* Dé réel */}
+      {/* Groupe contenant le modèle 3D interactif */}
       <group
         ref={modelRef}
+        // Début du drag (desktop uniquement)
         onPointerDown={(e) => {
           if (!isTouchDevice) {
             e.stopPropagation();
@@ -62,17 +68,14 @@ function InteractiveD20() {
             setLastPos({ x: e.clientX, y: e.clientY });
           }
         }}
-        onPointerUp={(e) => {
-          if (!isTouchDevice) {
-            e.stopPropagation();
-            setDragging(false);
-          }
+        // Fin du drag
+        onPointerUp={() => {
+          if (!isTouchDevice) setDragging(false);
         }}
+        // Déplacement souris ou tactile pour tourner le dé
         onPointerMove={(e) => {
           if (!introDone || !modelRef.current) return;
 
-          // Sur tactile → direct
-          // Sur desktop → seulement si dragging
           if (isTouchDevice || dragging) {
             const deltaX = (e.clientX - lastPos.x) * 0.01;
             const deltaY = (e.clientY - lastPos.y) * 0.01;
@@ -91,7 +94,7 @@ function InteractiveD20() {
         <D20Model />
       </group>
 
-      {/* Hitbox invisible */}
+      {/* Hitbox invisible autour du dé pour simplifier l’interaction */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[5, 5, 5]} />
         <meshBasicMaterial transparent opacity={0} />
@@ -100,45 +103,42 @@ function InteractiveD20() {
   );
 }
 
+// ============================
+// Composant HomePage
+// - Structure principale de la page
+// - Colonne gauche : rendu 3D interactif
+// - Colonne droite : contenu texte (accordéons + boutons)
+// ============================
 export default function HomePage() {
   return (
     <>
+      {/* Header commun à la page */}
       <Header />
 
+      {/* Layout principal : deux colonnes responsives */}
       <div
         className="
-          w-full 
-          min-h-screen 
-          flex flex-col md:flex-row 
-          bg-jdr-texture 
-          p-2 sm:p-4 md:p-8
-          pt-32 sm:pt-24   /* plus bas en SE, normal ailleurs */
-          overflow-y-auto   /* scroll activé sur petit écran */
+          w-full min-h-screen flex flex-col md:flex-row 
+          bg-jdr-texture p-2 sm:p-4 md:p-8
+          pt-32 sm:pt-24 overflow-y-auto
         "
       >
-        {/* Colonne gauche - Modèle 3D */}
+        {/* Colonne gauche : scène 3D */}
         <div
           className="
-            w-full 
-            md:w-1/2 
-            h-[250px]    
-            sm:h-[320px] 
-            md:h-screen 
+            w-full md:w-1/2 
+            h-[250px] sm:h-[320px] md:h-screen 
             flex items-center justify-center
           "
         >
           <Canvas
-            style={{
-              background: "transparent",
-              width: "100%",
-              height: "100%",
-            }}
+            style={{ background: "transparent", width: "100%", height: "100%" }}
           >
-            {/* Lumières */}
+            {/* Lumières de la scène */}
             <ambientLight intensity={3.5} />
             <directionalLight position={[10, 10, 10]} />
 
-            {/* Auto-fit + modèle interactif */}
+            {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
               <Bounds fit clip observe margin={1.2}>
                 <InteractiveD20 />
@@ -147,48 +147,28 @@ export default function HomePage() {
           </Canvas>
         </div>
 
-        {/* Colonne droite - Accordions + boutons */}
+        {/* Colonne droite : texte et actions */}
         <div
           className="
-            w-full 
-            md:w-1/2 
-            flex flex-col 
-            justify-center 
-            items-center 
-            space-y-4 sm:space-y-6 
-            mt-4 md:mt-0
+            w-full md:w-1/2 
+            flex flex-col justify-center items-center 
+            space-y-4 sm:space-y-6 mt-4 md:mt-0
           "
         >
+          {/* Accordéons d’information */}
           <div className="w-full max-w-sm sm:max-w-md">
             <DefaultAccordion
               items={[
-                {
-                  title: "Qu’est ce que le jeu de rôle ?",
-                  content:
-                    "We're not always in the position that we want to be at. We're constantly growing...",
-                },
-                {
-                  title: "RollUp! C’est quoi ?",
-                  content:
-                    "You can easily install Material Tailwind with npm or yarn and start using the components.",
-                },
-                {
-                  title: "Tu ne sais pas ou commencer ?",
-                  content:
-                    "Absolutely! Material Tailwind is fully customizable. You can change themes, colors, components, and animations.",
-                },
-                {
-                  title: "Créer ou rejoins une table",
-                  content:
-                    "Absolutely! Material Tailwind is fully customizable. You can change themes, colors, components, and animations.",
-                },
+                { title: "Qu’est ce que le jeu de rôle ?", content: "..." },
+                { title: "RollUp! C’est quoi ?", content: "..." },
+                { title: "Tu ne sais pas ou commencer ?", content: "..." },
+                { title: "Créer ou rejoins une table", content: "..." },
               ]}
             />
           </div>
 
-          {/* Disposition des boutons */}
+          {/* Boutons d’action principaux */}
           <div className="flex flex-col items-center pt-4 w-full max-w-xs">
-            {/* 2 boutons côte à côte */}
             <div className="flex w-full justify-center gap-3">
               <Button
                 color="secondary"
@@ -201,7 +181,6 @@ export default function HomePage() {
                 className="flex-1 px-4 py-2"
               />
             </div>
-            {/* 1 bouton centré en dessous */}
             <div className="mt-3 w-full flex justify-center">
               <Button
                 color="secondary"

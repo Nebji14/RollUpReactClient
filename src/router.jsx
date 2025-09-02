@@ -15,15 +15,15 @@ export const router = createBrowserRouter([
         element: <LogSignPage />,
       },
       {
-        path: "Home",
+        path: "/Home",
         element: <HomePage />,
       },
       {
-        path: "ForgotPass",
+        path: "/ForgotPass",
         element: <ForgotPass />,
       },
       {
-        path: "About",
+        path: "/About",
         element: <AboutPage />,
       },
     ],

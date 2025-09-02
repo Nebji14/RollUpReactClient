@@ -8,7 +8,8 @@ import { useAuth } from "../../../context/AuthContext";
 export default function Login({ hidden, onShowRegister }) {
   const navigate = useNavigate();
   const { login } = useAuth();
-  // Schéma Yup
+
+  // Validation avec Yup
   const schema = yup.object().shape({
     pseudo: yup
       .string()
@@ -20,10 +21,12 @@ export default function Login({ hidden, onShowRegister }) {
       .min(8, "Le mot de passe doit contenir au moins 8 caractères"),
   });
 
+  // Initialisation du formulaire avec react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
@@ -33,8 +36,8 @@ export default function Login({ hidden, onShowRegister }) {
     },
   });
 
+  // Fonction de soumission du formulaire
   async function submit(values) {
-    // console.log(values);
     try {
       const response = await fetch("http://localhost:5000/user/login", {
         method: "POST",
@@ -43,16 +46,17 @@ export default function Login({ hidden, onShowRegister }) {
           "Content-type": "application/json",
         },
       });
+
       const responseFromBackend = await response.json();
-      console.log(responseFromBackend);
 
       if (response.ok) {
-        toast.success("Bien connecté");
+        // Connexion réussie
+        toast.success("Connecté");
         login(responseFromBackend.user);
-
         navigate("/Home");
-        reset(defaultValues);
+        reset();
       } else {
+        // Erreur renvoyée par le backend
         toast.error(responseFromBackend.message);
       }
     } catch (error) {
@@ -73,14 +77,14 @@ export default function Login({ hidden, onShowRegister }) {
           Connexion
         </h1>
 
-        {/* PSEUDO */}
+        {/* Champ pseudo/e-mail */}
         <label className="font-montserrat font-bold text-[#fbf9f4] block my-[10px]">
           Pseudo/E-mail
         </label>
         <input
           type="text"
           placeholder="Saisissez votre pseudo/e-mail..."
-          {...register("pseudo", "e-mail")}
+          {...register("pseudo")}
           className="w-full h-12 bg-[#e9e4da] shadow-[0_5px_5px_rgba(0,0,0,0.5)] mb-3 px-3 rounded-full font-montserrat text-base text-[#111827] placeholder-[#111827] outline-none"
         />
         {errors.pseudo && (
@@ -89,7 +93,7 @@ export default function Login({ hidden, onShowRegister }) {
           </p>
         )}
 
-        {/* PASSWORD */}
+        {/* Champ mot de passe */}
         <label className="font-montserrat font-bold text-[#fbf9f4] block my-[10px]">
           Mot de passe
         </label>
@@ -104,14 +108,15 @@ export default function Login({ hidden, onShowRegister }) {
             {errors.password.message}
           </p>
         )}
-        {/* FORGOT PASSWORD */}
+
+        {/* Lien mot de passe oublié */}
         <NavLink to={"/ForgotPass"}>
           <p className="text-sm text-[#F2EEE8] font-montserrat font-semibold text-left cursor-pointer hover:text-[#f3cc7a] transition mb-4">
             Mot de passe oublié ?
           </p>
         </NavLink>
 
-        {/* BUTTONS */}
+        {/* Bouton Connexion */}
         <button
           type="submit"
           className="w-[120px] h-12 bg-[#e9e4da] text-[#3e3a4d] font-bold text-base rounded-full shadow-[0_5px_5px_rgba(0,0,0,0.5)] mx-auto my-[20px] block hover:text-[#6c5ebf] transition"
@@ -119,6 +124,7 @@ export default function Login({ hidden, onShowRegister }) {
           Connexion
         </button>
 
+        {/* Bouton S'inscrire */}
         <button
           type="button"
           onClick={onShowRegister}
