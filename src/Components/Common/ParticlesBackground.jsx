@@ -180,7 +180,7 @@ const AshParticles = () => {
     const ashParticles = [];
 
     // Initialisation des particules
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 150; i++) {
       ashParticles.push(new AshParticle());
     }
 

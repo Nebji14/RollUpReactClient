@@ -8,6 +8,7 @@ function Header() {
   const [lightMode, setLightMode] = useState(false);
   const [rotate, setRotate] = useState(false);
   const [scrolledMenu, setScrolledMenu] = useState(false);
+  const [linksVisible, setLinksVisible] = useState(0);
   const headerRef = useRef(null);
   const menuRef = useRef(null);
 
@@ -89,6 +90,31 @@ function Header() {
     };
   }, [menuOpen]);
 
+  // Animation d'apparition séquentielle des liens
+  useEffect(() => {
+    if (menuOpen) {
+      // Réinitialiser le compteur
+      setLinksVisible(0);
+
+      // Animer l'apparition des liens un par un
+      const timer = setInterval(() => {
+        setLinksVisible((prev) => {
+          if (prev < navLinks.length) {
+            return prev + 1;
+          } else {
+            clearInterval(timer);
+            return prev;
+          }
+        });
+      }, 60);
+
+      return () => clearInterval(timer);
+    } else {
+      // Réinitialiser quand le menu se ferme
+      setLinksVisible(0);
+    }
+  }, [menuOpen]);
+
   // Configuration des liens de navigation
   const navLinks = [
     { to: "/Home", label: "Accueil" },
@@ -138,7 +164,7 @@ function Header() {
         ref={menuRef}
         className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[999] overflow-y-auto transition-all duration-300
         ${menuOpen ? "flex" : "hidden"}
-        backdrop-blur-md bg-opacity-80
+        backdrop-blur-md bg-opacity-100
         ${lightMode ? "bg-[#3E3A4DCC]" : "bg-[#F2EEE8CC]"}`}
       >
         {navLinks.map((link, index) => (
@@ -146,9 +172,11 @@ function Header() {
             key={link.to}
             to={link.to}
             style={{
-              animationDelay: menuOpen ? `${index * 100}ms` : "0ms",
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? "translateY(0)" : "translateY(1rem)",
+              transitionDelay: index < linksVisible ? `${index * 60}ms` : "0ms",
+              opacity: index < linksVisible ? 1 : 0,
+              transform:
+                index < linksVisible ? "translateY(0)" : "translateY(20px)",
+              transition: "opacity 0.3s ease, transform 0.3s ease",
             }}
             className={`text-3xl my-4 transition-all duration-500
                ${

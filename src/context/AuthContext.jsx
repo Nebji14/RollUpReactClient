@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
 
   // Fonction de déconnexion qui réinitialise l'état
   const logout = () => {
-    setUserConnected(null); // correction : "nul" → "null"
+    setUserConnected(nul);
   };
 
   return (
