@@ -6,6 +6,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Bounds } from "@react-three/drei";
 import Button from "../Components/Common/Button";
 import AshParticles from "../Components/Common/ParticlesBackground";
+import Footer from "../Components/Common/Footer";
 
 // ============================
 // Composant InteractiveD20
@@ -140,8 +141,8 @@ export default function HomePage() {
             style={{ background: "transparent", width: "100%", height: "100%" }}
           >
             {/* Lumières de la scène */}
-            <ambientLight intensity={3.5} />
-            <directionalLight position={[10, 10, 10]} />
+            <ambientLight intensity={2.5} />
+            <directionalLight position={[0, 0, 5]} />
 
             {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
@@ -215,6 +216,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

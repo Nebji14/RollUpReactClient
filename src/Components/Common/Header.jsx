@@ -181,8 +181,8 @@ function Header() {
             className={`text-3xl my-4 transition-all duration-500
                ${
                  lightMode
-                   ? "text-[#F2EEE8] hover:text-[#dbcfb6]"
-                   : "text-[#3E3A4D] hover:text-[#7160b3]"
+                   ? "text-[#F2EEE8] hover:text-[#E9E4DA]"
+                   : "text-[#3E3A4D] hover:text-[#6c5ebf]"
                }`}
             onClick={() => setMenuOpen(false)}
           >
