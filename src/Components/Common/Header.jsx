@@ -1,31 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import de20Light from "../../Assets/Images/de20-light.webp";
 import de20Dark from "../../Assets/Images/de20.webp";
 
 function Header() {
-  // État pour gérer l'ouverture du menu
   const [menuOpen, setMenuOpen] = useState(false);
-  // État pour basculer entre version claire/sombre du header
   const [lightMode, setLightMode] = useState(false);
-  // État pour gérer l'animation de rotation du dé
   const [rotate, setRotate] = useState(false);
+  const headerRef = useRef(null);
 
-  // Changer le mode clair/sombre du header en fonction de la section visible
+  // Gestion du changement de mode clair/sombre selon la section visible
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll("section");
-      const headerHeight = 80;
-      const scrollPosition = window.scrollY + headerHeight / 2;
+      const scrollPosition =
+        window.scrollY + (headerRef.current?.offsetHeight || 0) / 2;
       let isLight = false;
 
-      // Vérifie la section actuelle pour déterminer si le header doit être clair
       sections.forEach((section) => {
         const top = section.offsetTop;
         const bottom = top + section.offsetHeight;
+
         if (scrollPosition >= top && scrollPosition <= bottom) {
+          // Détermination du mode en fonction des classes et couleurs de fond
           if (section.classList.contains("bg-jdr-texture")) {
-            isLight = true;
+            isLight = false; // Mode sombre pour bg-jdr-texture
+          } else if (section.classList.contains("bg-donjon")) {
+            isLight = true; // Mode clair pour bg-donjon
+          } else {
+            // Fallback: vérifier la couleur de fond
+            const bgColor = getComputedStyle(section).backgroundColor;
+            if (
+              bgColor.includes("255, 255, 255") ||
+              bgColor.includes("242, 238, 232")
+            ) {
+              isLight = true;
+            }
           }
         }
       });
@@ -34,23 +44,25 @@ function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // ⚡ Exécution immédiate au montage
+    handleScroll();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Bloquer/débloquer le scroll quand le menu est ouvert
+  // Gestion du défilement de la page lorsque le menu est ouvert
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
+
     return () => {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
 
-  // Liste des liens de navigation
+  // Configuration des liens de navigation
   const navLinks = [
     { to: "/Home", label: "Accueil" },
     { to: "/", label: "Quel JdR pour moi ?" },
@@ -64,21 +76,22 @@ function Header() {
     { to: "/", label: "Déconnexion" },
   ];
 
-  // Gestion du clic sur l’icône du dé
-  // - lance une animation de rotation
-  // - ouvre ou ferme le menu
+  // Gestion du clic sur le dé pour ouvrir/fermer le menu avec animation
   const handleDiceClick = () => {
     setRotate(true);
-    setTimeout(() => setRotate(false), 600); // arrêt animation après 600ms
+    setTimeout(() => setRotate(false), 600);
     setMenuOpen(!menuOpen);
   };
 
   return (
     <>
-      {/* HEADER - fixe en haut de page avec le dé comme bouton du menu */}
-      <header className="fixed top-0 left-0 w-full flex justify-center z-[9999] backdrop-blur-md py-2">
+      <header
+        ref={headerRef}
+        className="fixed top-0 left-0 w-full flex justify-center z-[9999] py-2"
+      >
         <img
-          src={lightMode ? de20Dark : de20Light}
+          // Logo qui change selon le mode clair/sombre
+          src={lightMode ? de20Light : de20Dark}
           alt="Dé 20 Menu"
           className={`w-20 cursor-pointer transition-transform duration-500 ${
             rotate ? "animate-spin-once" : ""
@@ -87,28 +100,29 @@ function Header() {
         />
       </header>
 
-      {/* NAV - menu plein écran affiché lors du clic sur le dé */}
+      {/* Menu de navigation avec animation d'apparition */}
       <nav
-        className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[1000] backdrop-blur-lg overflow-y-auto transition-all duration-300
+        className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[1000] overflow-y-auto transition-all duration-300
         ${menuOpen ? "flex" : "hidden"}
-        ${lightMode ? "bg-[#F2EEE8]/90" : "bg-[#3E3A4D]/90"}`}
+        backdrop-blur-md bg-opacity-80
+        ${lightMode ? "bg-[#3E3A4DCC]" : "bg-[#F2EEE8CC]"}`}
       >
-        {/* Liens de navigation avec animation d'apparition */}
         {navLinks.map((link, index) => (
           <NavLink
             key={link.to}
             to={link.to}
-            className={({ isActive }) =>
-              `text-3xl my-4 transition-colors duration-300 opacity-0 translate-y-4 
-               ${menuOpen ? "animate-fade-in-up" : ""} 
-               [animation-delay:${index * 100}ms]
+            style={{
+              animationDelay: menuOpen ? `${index * 100}ms` : "0ms",
+              opacity: menuOpen ? 1 : 0,
+              transform: menuOpen ? "translateY(0)" : "translateY(1rem)",
+            }}
+            className={`text-3xl my-4 transition-all duration-500
                ${
                  lightMode
-                   ? "text-[#3E3A4D] hover:text-[#7160b3]"
-                   : "text-[#F2EEE8] hover:text-[#dbcfb6]"
-               } ${isActive ? "font-semibold" : ""}`
-            }
-            onClick={() => setMenuOpen(false)} // Ferme le menu au clic sur un lien
+                   ? "text-[#F2EEE8] hover:text-[#dbcfb6]"
+                   : "text-[#3E3A4D] hover:text-[#7160b3]"
+               }`}
+            onClick={() => setMenuOpen(false)}
           >
             {link.label}
           </NavLink>
