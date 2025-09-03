@@ -5,6 +5,7 @@ import { DefaultAccordion } from "../Components/Common/DefaultAccordion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bounds } from "@react-three/drei";
 import Button from "../Components/Common/Button";
+import AshParticles from "../Components/Common/ParticlesBackground";
 
 // ============================
 // Composant InteractiveD20
@@ -22,15 +23,12 @@ function InteractiveD20() {
   const [introDone, setIntroDone] = useState(false);
   const startTime = useRef(null);
 
-  // Détection du type d’appareil (desktop ou tactile)
   const isTouchDevice =
     typeof window !== "undefined" && "ontouchstart" in window;
 
-  // Gestion des animations avec React Three Fiber
   useFrame((state) => {
     if (!modelRef.current) return;
 
-    // Animation d’introduction (rotation automatique au chargement)
     if (!introDone) {
       if (startTime.current === null)
         startTime.current = state.clock.elapsedTime;
@@ -45,60 +43,47 @@ function InteractiveD20() {
       return;
     }
 
-    // Inertie : le dé continue à tourner légèrement après un drag
     if (!dragging) {
       modelRef.current.rotation.y += velocity.current.x;
       modelRef.current.rotation.x += velocity.current.y;
 
-      velocity.current.x *= 0.95; // réduction progressive de la vitesse
+      velocity.current.x *= 0.95;
       velocity.current.y *= 0.95;
     }
   });
 
   return (
-    <group>
-      {/* Groupe contenant le modèle 3D interactif */}
-      <group
-        ref={modelRef}
-        // Début du drag (desktop uniquement)
-        onPointerDown={(e) => {
-          if (!isTouchDevice) {
-            e.stopPropagation();
-            setDragging(true);
-            setLastPos({ x: e.clientX, y: e.clientY });
-          }
-        }}
-        // Fin du drag
-        onPointerUp={() => {
-          if (!isTouchDevice) setDragging(false);
-        }}
-        // Déplacement souris ou tactile pour tourner le dé
-        onPointerMove={(e) => {
-          if (!introDone || !modelRef.current) return;
+    <group
+      ref={modelRef}
+      onPointerDown={(e) => {
+        if (!isTouchDevice) {
+          e.stopPropagation();
+          setDragging(true);
+          setLastPos({ x: e.clientX, y: e.clientY });
+        }
+      }}
+      onPointerUp={() => {
+        if (!isTouchDevice) setDragging(false);
+      }}
+      onPointerMove={(e) => {
+        if (!introDone || !modelRef.current) return;
 
-          if (isTouchDevice || dragging) {
-            const deltaX = (e.clientX - lastPos.x) * 0.01;
-            const deltaY = (e.clientY - lastPos.y) * 0.01;
+        if (isTouchDevice || dragging) {
+          const deltaX = (e.clientX - lastPos.x) * 0.01;
+          const deltaY = (e.clientY - lastPos.y) * 0.01;
 
-            modelRef.current.rotation.y += deltaX;
-            modelRef.current.rotation.x += deltaY;
+          modelRef.current.rotation.y += deltaX;
+          modelRef.current.rotation.x += deltaY;
 
-            velocity.current = { x: deltaX, y: deltaY };
-            setLastPos({ x: e.clientX, y: e.clientY });
-          }
-        }}
-        onPointerLeave={() => {
-          if (!isTouchDevice) setDragging(false);
-        }}
-      >
-        <D20Model />
-      </group>
-
-      {/* Hitbox invisible autour du dé pour simplifier l’interaction */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[5, 5, 5]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
+          velocity.current = { x: deltaX, y: deltaY };
+          setLastPos({ x: e.clientX, y: e.clientY });
+        }
+      }}
+      onPointerLeave={() => {
+        if (!isTouchDevice) setDragging(false);
+      }}
+    >
+      <D20Model />
     </group>
   );
 }
@@ -112,6 +97,7 @@ function InteractiveD20() {
 export default function HomePage() {
   return (
     <>
+      <AshParticles />
       {/* Header commun à la page */}
       <Header />
 
@@ -156,13 +142,29 @@ export default function HomePage() {
           "
         >
           {/* Accordéons d’information */}
-          <div className="w-full max-w-sm sm:max-w-md">
+          <div className="w-full max-w-sm sm:max-w-xl">
             <DefaultAccordion
               items={[
-                { title: "Qu’est ce que le jeu de rôle ?", content: "..." },
-                { title: "RollUp! C’est quoi ?", content: "..." },
-                { title: "Tu ne sais pas ou commencer ?", content: "..." },
-                { title: "Créer ou rejoins une table", content: "..." },
+                {
+                  title: "Qu’est ce que le jeu de rôle ?",
+                  content:
+                    "Le jeu de rôle est une activité ludique où les participants incarnent des personnages fictifs dans un univers imaginaire. Guidés par un maître de jeu, ils vivent des aventures, prennent des décisions et interagissent avec le monde qui les entoure. C’est une expérience immersive qui stimule la créativité, la collaboration et la narration.",
+                },
+                {
+                  title: "RollUp! C’est quoi ?",
+                  content:
+                    "Un site de découverter du jdR et de mise en relation entre joueurs et maîtres du jeu.",
+                },
+                {
+                  title: "Tu ne sais pas ou commencer ?",
+                  content:
+                    "Découvre nos Questionnaires ainsi que nos guides et ressources pour bien débuter dans le monde du jeu de rôle.",
+                },
+                {
+                  title: "Créer ou rejoins une table",
+                  content:
+                    "Crée ta propre table de jeu ou rejoins une partie existante en quelques clics. Utilise nos filtres pour trouver la partie qui te correspond le mieux.",
+                },
               ]}
             />
           </div>
