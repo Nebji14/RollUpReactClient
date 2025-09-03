@@ -83,7 +83,7 @@ function InteractiveD20() {
         if (!isTouchDevice) setDragging(false);
       }}
     >
-      <D20Model scale={0.8} /> {/* Taille réduite du modèle */}
+      <D20Model scale={1.5} />
     </group>
   );
 }
