@@ -145,7 +145,7 @@ export default function HomePage() {
 
             {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
-              <Bounds fit clip observe margin={1.5}>
+              <Bounds fit clip observe margin={1.1}>
                 {" "}
                 {/* Marge augmentée pour un modèle plus petit */}
                 <InteractiveD20 />
