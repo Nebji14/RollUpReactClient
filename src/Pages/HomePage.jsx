@@ -10,7 +10,7 @@ import AshParticles from "../Components/Common/ParticlesBackground";
 // ============================
 // Composant InteractiveD20
 // - Gère le modèle 3D du dé
-// - Animation d’intro (rotation automatique)
+// - Animation d'intro (rotation automatique)
 // - Interactions utilisateur (drag souris ou tactile)
 // - Inertie quand on relâche le dé
 // ============================
@@ -83,7 +83,7 @@ function InteractiveD20() {
         if (!isTouchDevice) setDragging(false);
       }}
     >
-      <D20Model />
+      <D20Model scale={0.8} /> {/* Taille réduite du modèle */}
     </group>
   );
 }
@@ -114,16 +114,16 @@ export default function HomePage() {
       {/* Layout principal : deux colonnes responsives */}
       <div
         className="
-          w-full min-h-screen flex flex-col md:flex-row 
+          w-full h-screen flex flex-col md:flex-row 
           bg-jdr-texture p-2 sm:p-4 md:p-8
-          pt-32 sm:pt-24 overflow-y-auto
+          pt-32 sm:pt-24 overflow-hidden /* Désactive le défilement */
         "
       >
         {/* Colonne gauche : scène 3D */}
         <div
           className="
             w-full md:w-1/2 
-            h-[250px] sm:h-[320px] md:h-screen 
+            h-[40vh] md:h-full /* Hauteur adaptative */
             flex items-center justify-center relative
           "
         >
@@ -145,7 +145,9 @@ export default function HomePage() {
 
             {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
-              <Bounds fit clip observe margin={1.2}>
+              <Bounds fit clip observe margin={1.5}>
+                {" "}
+                {/* Marge augmentée pour un modèle plus petit */}
                 <InteractiveD20 />
               </Bounds>
             </Suspense>
@@ -158,19 +160,20 @@ export default function HomePage() {
             w-full md:w-1/2 
             flex flex-col justify-center items-center 
             space-y-4 sm:space-y-6 mt-4 md:mt-0
+            overflow-y-auto /* Permet le défilement uniquement dans cette colonne si nécessaire */
           "
         >
-          {/* Accordéons d’information */}
+          {/* Accordéons d'information */}
           <div className="w-full max-w-sm sm:max-w-xl">
             <DefaultAccordion
               items={[
                 {
-                  title: "Qu’est ce que le jeu de rôle ?",
+                  title: "Qu'est ce que le jeu de rôle ?",
                   content:
-                    "Le jeu de rôle est une activité ludique où les participants incarnent des personnages fictifs dans un univers imaginaire. Guidés par un maître de jeu, ils vivent des aventures, prennent des décisions et interagissent avec le monde qui les entoure. C’est une expérience immersive qui stimule la créativité, la collaboration et la narration.",
+                    "Le jeu de rôle est une activité ludique où les participants incarnent des personnages fictifs dans un univers imaginaire. Guidés par un maître de jeu, ils vivent des aventures, prennent des décisions et interagissent avec le monde qui les entoure. C'est une expérience immersive qui stimule la créativité, la collaboration et la narration.",
                 },
                 {
-                  title: "RollUp! C’est quoi ?",
+                  title: "RollUp! C'est quoi ?",
                   content:
                     "Un site de découverter du jdR et de mise en relation entre joueurs et maîtres du jeu.",
                 },
@@ -188,7 +191,7 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Boutons d’action principaux */}
+          {/* Boutons d'action principaux */}
           <div className="flex flex-col items-center pt-4 w-full max-w-xs">
             <div className="flex w-full justify-center gap-3">
               <Button

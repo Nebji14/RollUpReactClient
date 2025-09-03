@@ -7,7 +7,9 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
   const [rotate, setRotate] = useState(false);
+  const [scrolledMenu, setScrolledMenu] = useState(false);
   const headerRef = useRef(null);
+  const menuRef = useRef(null);
 
   // Gestion du changement de mode clair/sombre selon la section visible
   useEffect(() => {
@@ -62,6 +64,31 @@ function Header() {
     };
   }, [menuOpen]);
 
+  // Gestion du défilement dans le menu
+  useEffect(() => {
+    const menu = menuRef.current;
+
+    const handleMenuScroll = () => {
+      if (menu && menu.scrollTop > 10) {
+        setScrolledMenu(true);
+      } else {
+        setScrolledMenu(false);
+      }
+    };
+
+    if (menuOpen && menu) {
+      menu.addEventListener("scroll", handleMenuScroll);
+      // Vérifier immédiatement si le menu a déjà du contenu défilé
+      handleMenuScroll();
+    }
+
+    return () => {
+      if (menu) {
+        menu.removeEventListener("scroll", handleMenuScroll);
+      }
+    };
+  }, [menuOpen]);
+
   // Configuration des liens de navigation
   const navLinks = [
     { to: "/Home", label: "Accueil" },
@@ -81,13 +108,19 @@ function Header() {
     setRotate(true);
     setTimeout(() => setRotate(false), 600);
     setMenuOpen(!menuOpen);
+    setScrolledMenu(false); // Réinitialiser l'état de défilement
   };
 
   return (
     <>
       <header
         ref={headerRef}
-        className="fixed top-0 left-0 w-full flex justify-center z-[9999] py-2"
+        className={`fixed top-0 left-0 w-full flex justify-center z-[9999] py-2 transition-all duration-300 ${
+          menuOpen && scrolledMenu
+            ? "backdrop-blur-xl bg-opacity-90 " +
+              (lightMode ? "bg-[#3E3A4D]" : "bg-[#F2EEE8]")
+            : ""
+        }`}
       >
         <img
           // Logo qui change selon le mode clair/sombre
@@ -102,7 +135,8 @@ function Header() {
 
       {/* Menu de navigation avec animation d'apparition */}
       <nav
-        className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[1000] overflow-y-auto transition-all duration-300
+        ref={menuRef}
+        className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[999] overflow-y-auto transition-all duration-300
         ${menuOpen ? "flex" : "hidden"}
         backdrop-blur-md bg-opacity-80
         ${lightMode ? "bg-[#3E3A4DCC]" : "bg-[#F2EEE8CC]"}`}
