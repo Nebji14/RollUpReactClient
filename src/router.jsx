@@ -4,6 +4,7 @@ import HomePage from "./Pages/HomePage";
 import AboutPage from "./Pages/AboutPage";
 import ForgotPass from "./Pages/ForgotPass";
 import LogSignPage from "./Pages/LogSignPage";
+import ChangePass from "./Pages/ChangePass";
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/ForgotPass",
         element: <ForgotPass />,
+      },
+      {
+        path: "/ChangePass",
+        element: <ChangePass />,
       },
       {
         path: "/About",

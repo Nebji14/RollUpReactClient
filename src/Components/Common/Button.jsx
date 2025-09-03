@@ -7,7 +7,9 @@ export default function Button({ id, color, text, className = "", ...props }) {
       className={`
         inline-flex items-center justify-center 
         px-4 py-2 rounded-full 
-        min-w-[140px]   /* largeur minimale */
+        min-w-[140px] 
+        min-h-[48px]  
+         text-center
         ${variants[color]} 
         ${className}
       `}
