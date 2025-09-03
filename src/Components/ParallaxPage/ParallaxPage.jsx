@@ -7,6 +7,10 @@ import castleImg from "../../Assets/Images/Chateau-fond.webp";
 import Button from "../Common/Button.jsx";
 import { NavLink } from "react-router-dom";
 
+// Import FontAwesome (après installation)
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
+
 const ParallaxPage = () => {
   useEffect(() => {
     // Récupération des éléments du DOM par leur ID
@@ -15,6 +19,7 @@ const ParallaxPage = () => {
     const mountain = document.getElementById("mountain");
     const mountain2 = document.getElementById("mountain2");
     const btn = document.getElementById("btnEnSavoirPlus");
+    const scrollArrow = document.getElementById("scrollArrow");
 
     // Vérification que tous les éléments existent avant d’appliquer l’effet
     if (clouds && mountain && mountain2 && btn) {
@@ -53,6 +58,11 @@ const ParallaxPage = () => {
           // Déplacement vertical + fade du bouton "En savoir plus"
           btn.style.top = btnOriginTop + value * 0.7 + "px";
           btn.style.opacity = Math.max(1 - value / 600, 0);
+
+          // Fade de la flèche de défilement
+          if (scrollArrow) {
+            scrollArrow.style.opacity = Math.max(1 - value / 300, 0);
+          }
         }
       };
 
@@ -118,6 +128,20 @@ const ParallaxPage = () => {
           id="castle"
           className="absolute z-[4] bottom-0 left-0 w-screen sm:h-1/2 h-[40%] pointer-events-none select-none"
         />
+
+        {/* Flèche de défilement vers le bas avec FontAwesome */}
+        <div className="absolute bottom-4 right-8 z-10">
+          <div
+            id="scrollArrow"
+            className="animate-bounce flex flex-col items-center"
+          >
+            <FontAwesomeIcon
+              icon={faAnglesDown}
+              className="text-[#F2EEE8] text-4xl mb-1"
+            />
+            <span className="text-[#F2EEE8] text-sm">Scroll</span>
+          </div>
+        </div>
       </section>
     </>
   );
