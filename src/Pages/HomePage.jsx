@@ -1,4 +1,4 @@
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useRef, useState, useEffect } from "react";
 import D20Model from "../Components/Model3D/D20Model";
 import Header from "../Components/Common/Header";
 import { DefaultAccordion } from "../Components/Common/DefaultAccordion";
@@ -95,6 +95,16 @@ function InteractiveD20() {
 // - Colonne droite : contenu texte (accordéons + boutons)
 // ============================
 export default function HomePage() {
+  const [showTooltip, setShowTooltip] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowTooltip(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       <AshParticles />
@@ -114,9 +124,18 @@ export default function HomePage() {
           className="
             w-full md:w-1/2 
             h-[250px] sm:h-[320px] md:h-screen 
-            flex items-center justify-center
+            flex items-center justify-center relative
           "
         >
+          {/* Texte d'instruction positionné devant le modèle 3D */}
+          {showTooltip && (
+            <div className="absolute inset-0 flex items-center justify-center z-10">
+              <div className="bg-black/70 text-white px-4 py-2 rounded-lg text-sm animate-pulse">
+                <p>🎲 Fais tourner le dé 20 faces</p>
+              </div>
+            </div>
+          )}
+
           <Canvas
             style={{ background: "transparent", width: "100%", height: "100%" }}
           >
