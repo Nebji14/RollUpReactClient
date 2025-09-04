@@ -1,21 +1,23 @@
 import { useContext, useState } from "react";
 import { createContext } from "react";
+import { useLoaderData } from "react-router-dom";
 
 // Création du contexte d'authentification
 const AuthContext = createContext();
 
-// Fournisseur du contexte, englobe l'application ou certaines parties
+// Fournisseur du contexte qui englobe l'application ou certaines parties
 export function AuthProvider({ children }) {
-  const [userConnected, setUserConnected] = useState(null); // État pour stocker l'utilisateur connecté
+  const initialUser = useLoaderData();
+  const [userConnected, setUserConnected] = useState(initialUser); // Stocke l'utilisateur connecté
 
   console.log(userConnected);
 
-  // Fonction de connexion qui enregistre les infos de l'utilisateur
+  // Met à jour l'état avec l'utilisateur connecté
   const login = async (values) => {
     setUserConnected(values);
   };
 
-  // Fonction de déconnexion qui réinitialise l'état
+  // Réinitialise l'état pour déconnecter l'utilisateur
   const logout = () => {
     setUserConnected(nul);
   };
@@ -23,9 +25,9 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        userConnected,
-        login,
-        logout,
+        userConnected, // Données de l'utilisateur connecté
+        login, // Méthode pour connecter l'utilisateur
+        logout, // Méthode pour déconnecter l'utilisateur
       }}
     >
       {children}

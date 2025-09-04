@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../context/AuthContext";
+import { signIn } from "../../../api/auth.api";
 
 export default function Login({ hidden, onShowRegister }) {
   const navigate = useNavigate();
@@ -39,25 +40,17 @@ export default function Login({ hidden, onShowRegister }) {
   // Fonction de soumission du formulaire
   async function submit(values) {
     try {
-      const response = await fetch("http://localhost:5000/user/login", {
-        method: "POST",
-        body: JSON.stringify(values),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+      const userConnected = await signIn(values);
 
-      const responseFromBackend = await response.json();
-
-      if (response.ok) {
+      if (userConnected.user) {
         // Connexion réussie
         toast.success("Connecté");
-        login(responseFromBackend.user);
+        login(userConnected.user);
         navigate("/Home");
-        reset();
+        reset(defaultValues);
       } else {
         // Erreur renvoyée par le backend
-        toast.error(responseFromBackend.message);
+        toast.error(userConnected.message);
       }
     } catch (error) {
       console.log(error);

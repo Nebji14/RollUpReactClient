@@ -12,7 +12,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full h-[15vh] bg-[#3E3A4D] flex items-center justify-between px-8 py-4 relative">
+    <footer className="w-full h-[15vh] bg-[#3E3A4D] flex items-center justify-between px-8 py-4 fixed bottom-0">
       {/* Dégradé supérieur */}
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-t from-[#3E3A4D] to-transparent -translate-y-full"></div>
 
@@ -39,7 +39,7 @@ function Footer() {
       {/* Partie centre - Logo et année */}
       <div className="flex flex-col items-center">
         {/* Logo entouré d'un NavLink */}
-        <NavLink to="/" className="block -mb-2">
+        <NavLink to="/Home" className="block -mb-2">
           <div className="w-[150px] h-[150px] flex items-center justify-center">
             <img src={logoImg} alt="logo RollUp" />
           </div>

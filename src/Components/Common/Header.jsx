@@ -118,14 +118,14 @@ function Header() {
   // Configuration des liens de navigation
   const navLinks = [
     { to: "/Home", label: "Accueil" },
-    { to: "/", label: "Quel JdR pour moi ?" },
-    { to: "/", label: "Ton rôle idéal" },
-    { to: "/", label: "Découvrir les JdR" },
-    { to: "/", label: "Guides & Astuces" },
-    { to: "/", label: "Scénarios prêts-à-jouer" },
-    { to: "/", label: "Tables & Communauté" },
-    { to: "/", label: "Contact" },
-    { to: "/", label: "Mon compte" },
+    { to: "/WhatJdr", label: "Quel JdR pour moi ?" },
+    { to: "/IdealRole", label: "Ton rôle idéal" },
+    { to: "/DescoverJdr", label: "Découvrir les JdR" },
+    { to: "/GuideTips", label: "Guides & Astuces" },
+    { to: "/OneShot", label: "Scénarios prêts-à-jouer" },
+    { to: "/TableCommu", label: "Tables & Communauté" },
+    { to: "/Contact", label: "Contact" },
+    { to: "/MonCompte", label: "Mon compte" },
     { to: "/", label: "Déconnexion" },
   ];
 
