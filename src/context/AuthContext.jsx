@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { createContext } from "react";
 import { useLoaderData } from "react-router-dom";
+import { signout } from "../api/auth.api";
 
 // Création du contexte d'authentification
 const AuthContext = createContext();
@@ -17,9 +18,9 @@ export function AuthProvider({ children }) {
     setUserConnected(values);
   };
 
-  // Réinitialise l'état pour déconnecter l'utilisateur
-  const logout = () => {
-    setUserConnected(nul);
+  const logout = async () => {
+    await signout();
+    setUserConnected(null);
   };
 
   return (

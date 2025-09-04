@@ -2,8 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import de20Light from "../../Assets/Images/de20-light.webp";
 import de20Dark from "../../Assets/Images/de20.webp";
+import { useAuth } from "../../context/AuthContext";
 
 function Header() {
+  const { logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
   const [rotate, setRotate] = useState(false);
@@ -126,7 +128,7 @@ function Header() {
     { to: "/TableCommu", label: "Tables & Communauté" },
     { to: "/Contact", label: "Contact" },
     { to: "/MonCompte", label: "Mon compte" },
-    { to: "/", label: "Déconnexion" },
+    { to: "/", onClick: logout, label: "Déconnexion" },
   ];
 
   // Gestion du clic sur le dé pour ouvrir/fermer le menu avec animation
