@@ -19,7 +19,7 @@ export default function ForgotPass() {
       const data = await res.json();
 
       if (data.message) {
-        toast.success(data.message, { duration: 7000 }); // ✅ message backend affiché 7 sec
+        toast.success(data.message, { duration: 7000 }); //message backend affiché 7 sec
         setEmail(""); // on vide le champ email
       }
     } catch (error) {
