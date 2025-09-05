@@ -84,7 +84,7 @@ function InteractiveD20() {
         if (!isTouchDevice) setDragging(false);
       }}
     >
-      <D20Model scale={1.5} />
+      <D20Model scale={1.2} />
     </group>
   );
 }
@@ -146,7 +146,7 @@ export default function HomePage() {
 
             {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
-              <Bounds fit clip observe margin={1.1}>
+              <Bounds fit clip observe margin={1.2}>
                 {" "}
                 {/* Marge augmentée pour un modèle plus petit */}
                 <InteractiveD20 />

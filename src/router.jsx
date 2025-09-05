@@ -6,6 +6,8 @@ import ForgotPass from "./Pages/ForgotPass";
 import LogSignPage from "./Pages/LogSignPage";
 import ChangePass from "./Pages/ChangePass";
 import { rootLoader } from "./Loaders/rootLoader";
+import UserNotConnected from "./ProtectedRoutes/UserNotConnected";
+import UserConnected from "./ProtectedRoutes/UserConnected";
 
 export const router = createBrowserRouter([
   {
@@ -15,7 +17,11 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true, // équivalent de path: "/"
-        element: <LogSignPage />,
+        element: (
+          <UserNotConnected>
+            <LogSignPage />
+          </UserNotConnected>
+        ),
       },
       {
         path: "/ForgotPass",
@@ -31,7 +37,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/Home",
-        element: <HomePage />,
+        element: (
+          <UserConnected>
+            <HomePage />
+          </UserConnected>
+        ),
       },
     ],
   },

@@ -186,7 +186,12 @@ function Header() {
                    ? "text-[#F2EEE8] hover:text-[#E9E4DA]"
                    : "text-[#3E3A4D] hover:text-[#6c5ebf]"
                }`}
-            onClick={() => setMenuOpen(false)}
+            onClick={async () => {
+              setMenuOpen(false);
+              if (link.onClick) {
+                await link.onClick();
+              }
+            }}
           >
             {link.label}
           </NavLink>
