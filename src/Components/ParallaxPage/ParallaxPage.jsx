@@ -86,7 +86,7 @@ const ParallaxPage = () => {
           src={cloudsImg}
           alt="nuages"
           id="clouds"
-          className="absolute z-[1] sm:top-[-10%] top-[35%]  left-1/2 w-full max-w-[1000px] -translate-x-1/2 pointer-events-none select-none"
+          className="absolute z-[1] sm:top-[-5%] top-[15%]  left-1/2 w-full max-w-[1000px] -translate-x-1/2 pointer-events-none select-none"
         />
 
         {/* Logo central */}
