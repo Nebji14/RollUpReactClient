@@ -113,11 +113,11 @@ export default function HomePage() {
       <Header />
 
       {/* Layout principal : deux colonnes responsives */}
-      <div
+      <section
         className="
           w-full h-screen flex flex-col md:flex-row 
           bg-jdr-texture p-2 sm:p-4 md:p-8
-          pt-32 sm:pt-24 overflow-hidden /* Désactive le défilement */
+          pt-32 sm:pt-24 overflow-hidden 
         "
       >
         {/* Colonne gauche : scène 3D */}
@@ -215,7 +215,7 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <Footer />
     </>
   );

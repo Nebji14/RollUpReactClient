@@ -8,6 +8,8 @@ import ChangePass from "./Pages/ChangePass";
 import { rootLoader } from "./Loaders/rootLoader";
 import UserNotConnected from "./ProtectedRoutes/UserNotConnected";
 import UserConnected from "./ProtectedRoutes/UserConnected";
+import LeCoinDesPj from "./Pages/LeCoinDesPj";
+import LeCoinDesMj from "./Pages/LeCoinDesMj";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +42,22 @@ export const router = createBrowserRouter([
         element: (
           <UserConnected>
             <HomePage />
+          </UserConnected>
+        ),
+      },
+      {
+        path: "/Pj",
+        element: (
+          <UserConnected>
+            <LeCoinDesPj />
+          </UserConnected>
+        ),
+      },
+      {
+        path: "/Mj",
+        element: (
+          <UserConnected>
+            <LeCoinDesMj />
           </UserConnected>
         ),
       },
