@@ -7,13 +7,10 @@ import { Bounds } from "@react-three/drei";
 import Button from "../Components/Common/Button";
 import AshParticles from "../Components/Common/ParticlesBackground";
 import Footer from "../Components/Common/Footer";
+import { NavLink } from "react-router-dom";
 
 // ============================
 // Composant InteractiveD20
-// - Gère le modèle 3D du dé
-// - Animation d'intro (rotation automatique)
-// - Interactions utilisateur (drag souris ou tactile)
-// - Inertie quand on relâche le dé
 // ============================
 function InteractiveD20() {
   const modelRef = useRef();
@@ -91,9 +88,6 @@ function InteractiveD20() {
 
 // ============================
 // Composant HomePage
-// - Structure principale de la page
-// - Colonne gauche : rendu 3D interactif
-// - Colonne droite : contenu texte (accordéons + boutons)
 // ============================
 export default function HomePage() {
   const [showTooltip, setShowTooltip] = useState(true);
@@ -109,26 +103,26 @@ export default function HomePage() {
   return (
     <>
       <AshParticles />
-      {/* Header commun à la page */}
       <Header />
 
-      {/* Layout principal : deux colonnes responsives */}
       <section
         className="
-          w-full h-screen flex flex-col md:flex-row 
-          bg-jdr-texture p-2 sm:p-4 md:p-8
-          pt-32 sm:pt-24 overflow-hidden 
-        "
+    w-full 
+    h-auto md:h-screen        
+    flex flex-col md:flex-row 
+    bg-jdr-texture p-2 sm:p-4 md:p-8
+    pt-32 sm:pt-24 
+    overflow-y-visible md:overflow-hidden 
+  "
       >
         {/* Colonne gauche : scène 3D */}
         <div
           className="
             w-full md:w-1/2 
-            h-[40vh] md:h-full /* Hauteur adaptative */
+            h-[40vh] md:h-full 
             flex items-center justify-center relative
           "
         >
-          {/* Texte d'instruction positionné devant le modèle 3D */}
           {showTooltip && (
             <div className="absolute inset-0 flex items-center justify-center z-10">
               <div className="bg-black/70 text-white px-4 py-2 rounded-lg text-sm animate-pulse">
@@ -140,15 +134,11 @@ export default function HomePage() {
           <Canvas
             style={{ background: "transparent", width: "100%", height: "100%" }}
           >
-            {/* Lumières de la scène */}
             <ambientLight intensity={2.5} />
             <directionalLight position={[0, 0, 5]} />
 
-            {/* Dé interactif, centré et auto-ajusté */}
             <Suspense fallback={null}>
               <Bounds fit clip observe margin={1.2}>
-                {" "}
-                {/* Marge augmentée pour un modèle plus petit */}
                 <InteractiveD20 />
               </Bounds>
             </Suspense>
@@ -161,11 +151,13 @@ export default function HomePage() {
             w-full md:w-1/2 
             flex flex-col justify-center items-center 
             space-y-4 sm:space-y-6 mt-4 md:mt-0
-            overflow-y-auto /* Permet le défilement uniquement dans cette colonne si nécessaire */
           "
         >
-          {/* Accordéons d'information */}
           <div className="w-full max-w-sm sm:max-w-xl">
+            <h1 className="text-center text-[32px] font-bold mb-9 text-[#31255B]">
+              Bienvenue sur RollUp!
+            </h1>
+
             <DefaultAccordion
               items={[
                 {
@@ -176,12 +168,12 @@ export default function HomePage() {
                 {
                   title: "RollUp! C'est quoi ?",
                   content:
-                    "Un site de découverter du jdR et de mise en relation entre joueurs et maîtres du jeu.",
+                    "Un site de découverte du jdR et de mise en relation entre joueurs et maîtres du jeu.",
                 },
                 {
                   title: "Tu ne sais pas ou commencer ?",
                   content:
-                    "Découvre nos Questionnaires ainsi que nos guides et ressources pour bien débuter dans le monde du jeu de rôle.",
+                    "Découvre nos questionnaires ainsi que nos guides et ressources pour bien débuter dans le monde du jeu de rôle.",
                 },
                 {
                   title: "Créer ou rejoins une table",
@@ -192,7 +184,6 @@ export default function HomePage() {
             />
           </div>
 
-          {/* Boutons d'action principaux */}
           <div className="flex flex-col items-center pt-4 w-full max-w-xs">
             <div className="flex w-full justify-center gap-3">
               <Button
@@ -207,11 +198,13 @@ export default function HomePage() {
               />
             </div>
             <div className="mt-3 w-full flex justify-center">
-              <Button
-                color="secondary"
-                text="À table !"
-                className="px-6 py-2"
-              />
+              <NavLink to="/Pj">
+                <Button
+                  color="secondary"
+                  text="Rejoins une table"
+                  className="px-6 py-2"
+                />
+              </NavLink>
             </div>
           </div>
         </div>

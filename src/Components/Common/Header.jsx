@@ -14,8 +14,19 @@ function Header() {
   const [scrolledMenu, setScrolledMenu] = useState(false);
   const [linksVisible, setLinksVisible] = useState(0);
   const [submenuOpen, setSubmenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const headerRef = useRef(null);
   const menuRef = useRef(null);
+
+  // Gestion du scroll global pour changer la couleur du header
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // init au chargement
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Gestion du changement clair/sombre
   useEffect(() => {
@@ -108,8 +119,8 @@ function Header() {
     {
       label: "Tables & Communauté",
       subLinks: [
-        { to: "/CoinJoueurs", label: "Le coin des Joueurs" },
-        { to: "/CoinMaitre", label: "Le coin des Maîtres du Jeu" },
+        { to: "/Pj", label: "Le coin des Joueurs" },
+        { to: "/Mj", label: "Le coin des Maîtres du Jeu" },
       ],
     },
     { to: "/Contact", label: "Contact" },
@@ -126,14 +137,18 @@ function Header() {
 
   return (
     <>
+      {/* Header avec fond dynamique */}
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 w-full flex justify-center z-[9999] py-2 transition-all duration-300 ${
-          menuOpen && scrolledMenu
-            ? "backdrop-blur-xl bg-opacity-90 " +
-              (lightMode ? "bg-[#3E3A4D]" : "bg-[#F2EEE8]")
-            : ""
-        }`}
+        className={`fixed top-0 left-0 w-full flex justify-center z-[9999] py-2 transition-all duration-300
+          ${
+            scrolled || scrolledMenu
+              ? `backdrop-blur-md bg-opacity-80 ${
+                  lightMode ? "bg-[#3E3A4D]" : "bg-[#F2EEE8]"
+                }`
+              : "bg-transparent"
+          }
+        `}
       >
         <img
           src={lightMode ? de20Light : de20Dark}

@@ -1,15 +1,132 @@
 import React from "react";
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
+import Button from "../Components/Common/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 import AshParticles from "../Components/Common/ParticlesBackground";
 
-export default function LeCoinDesPj() {
+export default function LeCoinDesMj() {
   return (
     <>
       <AshParticles />
       <Header />
-      <section className="w-full h-screen bg-jdr-texture bg-cover bg-center overflow-hidden flex flex-col sm:flex-row items-center justify-center ">
-        Le CoinCoin des Pj
+      <section className=" w-full bg-jdr-texture bg-cover bg-center bg-fixed flex flex-col pt-32 px-6 pb-32">
+        <h1 className="text-center text-[32px] font-bold text-[#31255b] mb-8 mt-5">
+          Le coin des maîtres du jeu
+        </h1>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center w-full mx-auto gap-4 sm:gap-6">
+          <Button
+            color="secondary"
+            text="Créer une table"
+            icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+            className="w-[250px] sm:w-auto"
+          />
+
+          <NavLink to="/Pj">
+            <Button
+              color="secondary"
+              text="Le coin des Pj"
+              className="w-[250px] sm:w-auto"
+            />
+          </NavLink>
+        </div>
+
+        <div className="mt-16 flex flex-col items-center  gap-16 px-4 sm:px-20">
+          <div className="w-full max-w-5xl">
+            <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
+              Recherche de tables :
+            </p>
+            <div className="text-[#111827] flex  flex-col sm:flex-row sm:flex-wrap gap-4">
+              {/* Contenue Dynamique */}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
+              error molestias sint beatae aperiam in fuga reprehenderit nisi
+              accusamus quas nemo, rem eveniet tenetur perspiciatis! Saepe alias
+              esse consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.
+            </div>
+          </div>
+
+          <div className="w-full max-w-5xl">
+            <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
+              Vos tables ajoutées :
+            </p>
+            <div className="text-[#111827] flex flex-col md:flex-row md:flex-wrap gap-4 ">
+              {/* Contenue Dynamique */}
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
+              error molestias sint beatae aperiam in fuga reprehenderit nisi
+              accusamus quas nemo, rem eveniet tenetur perspiciatis! Saepe alias
+              esse consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.Lorem ipsum
+              dolor sit amet consectetur adipisicing elit. Impedit error
+              molestias sint beatae aperiam in fuga reprehenderit nisi accusamus
+              quas nemo, rem eveniet tenetur perspiciatis! Saepe alias esse
+              consectetur aspernatur.Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Impedit error molestias sint beatae aperiam in
+              fuga reprehenderit nisi accusamus quas nemo, rem eveniet tenetur
+              perspiciatis! Saepe alias esse consectetur aspernatur.
+            </div>
+          </div>
+        </div>
       </section>
       <Footer />
     </>
