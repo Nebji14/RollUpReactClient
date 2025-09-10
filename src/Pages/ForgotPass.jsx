@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Input from "../Components/Common/Input.jsx";
 import Button from "../Components/Common/Button.jsx";
 import toast from "react-hot-toast";
+import { NavLink } from "react-router-dom";
 
 export default function ForgotPass() {
   const [email, setEmail] = useState("");
@@ -23,6 +24,7 @@ export default function ForgotPass() {
         setEmail(""); // on vide le champ email
       }
     } catch (error) {
+      console.error(error);
       toast.error("Erreur lors de l’envoi du mail.", { duration: 7000 });
     }
   };
@@ -55,6 +57,14 @@ export default function ForgotPass() {
             className="!px-6 !py-2 w-full max-w-[150px]"
             type="submit"
           />
+          <NavLink to="/">
+            <Button
+              color="primary"
+              text="Retour"
+              className="!px-6 !py-2 w-full max-w-[150px]"
+              type="submit"
+            />
+          </NavLink>
         </div>
       </form>
     </section>

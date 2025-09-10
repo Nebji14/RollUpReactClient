@@ -8,6 +8,8 @@ import { useAuth } from "../../context/AuthContext";
 
 function Header() {
   const { logout } = useAuth();
+
+  // États pour gérer l'ouverture du menu, l'affichage en mode clair/sombre, les animations et le défilement
   const [menuOpen, setMenuOpen] = useState(false);
   const [lightMode, setLightMode] = useState(false);
   const [rotate, setRotate] = useState(false);
@@ -15,37 +17,68 @@ function Header() {
   const [linksVisible, setLinksVisible] = useState(0);
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const headerRef = useRef(null);
   const menuRef = useRef(null);
 
-  // Gestion du scroll global pour changer la couleur du header
+  // Récupère le container de scroll (main ou window)
+  const getScrollContainer = () => document.querySelector("main") || window;
+
+  // Gestion du scroll général pour ajouter un fond au header
   useEffect(() => {
+    const sc = getScrollContainer();
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const scrollTop = sc === window ? window.scrollY : sc.scrollTop;
+      setScrolled(scrollTop > 50);
     };
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // init au chargement
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    sc.addEventListener
+      ? sc.addEventListener("scroll", handleScroll)
+      : window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => {
+      sc.removeEventListener
+        ? sc.removeEventListener("scroll", handleScroll)
+        : window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // Gestion du changement clair/sombre
+  // Détection du mode clair/sombre en fonction des sections visibles
   useEffect(() => {
+    const sc = getScrollContainer();
+
     const handleScroll = () => {
-      const sections = document.querySelectorAll("section");
-      const scrollPosition =
-        window.scrollY + (headerRef.current?.offsetHeight || 0) / 2;
+      const scrollTop = sc === window ? window.scrollY : sc.scrollTop;
+      const headerHeight = headerRef.current?.offsetHeight || 0;
+      const scrollPosition = scrollTop + headerHeight / 2;
       let isLight = false;
 
+      const sections = document.querySelectorAll(
+        "section, .bg-jdr-texture, .bg-donjon, main > div"
+      );
+
       sections.forEach((section) => {
-        const top = section.offsetTop;
-        const bottom = top + section.offsetHeight;
+        const rect = section.getBoundingClientRect();
+        const scRect = sc === window ? { top: 0 } : sc.getBoundingClientRect();
+        const top =
+          rect.top -
+          scRect.top +
+          (sc === window ? window.scrollY : sc.scrollTop);
+        const bottom = top + rect.height;
+
         if (scrollPosition >= top && scrollPosition <= bottom) {
-          if (section.classList.contains("bg-jdr-texture")) {
+          if (
+            section.classList &&
+            section.classList.contains("bg-jdr-texture")
+          ) {
             isLight = false;
-          } else if (section.classList.contains("bg-donjon")) {
+          } else if (
+            section.classList &&
+            section.classList.contains("bg-donjon")
+          ) {
             isLight = true;
           } else {
-            const bgColor = getComputedStyle(section).backgroundColor;
+            const bgColor = getComputedStyle(section).backgroundColor || "";
             if (
               bgColor.includes("255, 255, 255") ||
               bgColor.includes("242, 238, 232")
@@ -55,14 +88,22 @@ function Header() {
           }
         }
       });
+
       setLightMode(isLight);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    sc.addEventListener
+      ? sc.addEventListener("scroll", handleScroll)
+      : window.addEventListener("scroll", handleScroll);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      sc.removeEventListener
+        ? sc.removeEventListener("scroll", handleScroll)
+        : window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // Body overflow
+  // Empêche le scroll du body quand le menu est ouvert
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -74,7 +115,7 @@ function Header() {
     };
   }, [menuOpen]);
 
-  // Scroll menu
+  // Gestion du scroll interne du menu (ajout d’un fond au besoin)
   useEffect(() => {
     const menu = menuRef.current;
     const handleMenuScroll = () => {
@@ -90,7 +131,7 @@ function Header() {
     };
   }, [menuOpen]);
 
-  // Animation liens
+  // Animation d’apparition progressive des liens du menu
   useEffect(() => {
     if (menuOpen) {
       setLinksVisible(0);
@@ -108,7 +149,7 @@ function Header() {
     }
   }, [menuOpen]);
 
-  // Liens navigation
+  // Liste des liens de navigation (inclut des sous-liens pour la communauté)
   const navLinks = [
     { to: "/Home", label: "Accueil" },
     { to: "/WhatJdr", label: "Quel JdR pour moi ?" },
@@ -128,6 +169,7 @@ function Header() {
     { to: "/", onClick: logout, label: "Déconnexion" },
   ];
 
+  // Gestion du clic sur le dé (ouvre/ferme le menu et lance l’animation)
   const handleDiceClick = () => {
     setRotate(true);
     setTimeout(() => setRotate(false), 600);
@@ -137,18 +179,18 @@ function Header() {
 
   return (
     <>
-      {/* Header avec fond dynamique */}
+      {/* Header avec le dé servant de bouton menu */}
       <header
         ref={headerRef}
         className={`fixed top-0 left-0 w-full flex justify-center z-[9999] py-2 transition-all duration-300
-          ${
-            scrolled || scrolledMenu
-              ? `backdrop-blur-md bg-opacity-80 ${
-                  lightMode ? "bg-[#3E3A4D]" : "bg-[#F2EEE8]"
-                }`
-              : "bg-transparent"
-          }
-        `}
+    ${
+      scrolled || scrolledMenu
+        ? lightMode
+          ? "backdrop-blur-md bg-[#3E3A4D]/80"
+          : "backdrop-blur-md bg-[#F2EEE8]/80"
+        : "bg-transparent"
+    }
+  `}
       >
         <img
           src={lightMode ? de20Light : de20Dark}
@@ -160,7 +202,7 @@ function Header() {
         />
       </header>
 
-      {/* Menu */}
+      {/* Menu latéral plein écran */}
       <nav
         ref={menuRef}
         className={`fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-start pt-40 z-[999] overflow-y-auto transition-all duration-300

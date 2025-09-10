@@ -15,7 +15,7 @@ export default function Button({
     inline-flex items-center justify-center gap-2
     px-4 py-2 rounded-full 
     min-h-[48px]  
-    min-w-[140px]   // 👈 au lieu de w-[140px]
+    min-w-[160px]  
     text-center
     ${variants[color]} 
     ${className}

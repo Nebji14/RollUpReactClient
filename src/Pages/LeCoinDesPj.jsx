@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
-import Button from "../Components/Common/Button";
+import Button from "../Components/Common/Button"; // ton bouton existant
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import Recherche from "../Components/Common/Recherche";
 
 export default function LeCoinDesPj() {
+  const [openRecherche, setOpenRecherche] = useState(false);
+
   return (
-    <div className="w-full flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen w-full bg-donjon bg-cover bg-center bg-fixed">
       <Header />
 
-      {/* Contenu scrollable */}
-      <main className="flex-1 overflow-y-auto w-full">
-        <section className="w-full min-h-screen bg-donjon bg-cover bg-center flex flex-col pt-[120px] px-6 pb-32">
-          {/* pt-[120px] = espace pour le Header fixe */}
+      <main className="flex-1 overflow-y-auto pt-32 pb-32 px-6">
+        <section className="w-full max-w-5xl mx-auto px-6">
           <h1 className="text-center text-[32px] font-bold text-[#F3CC7A] mb-8 mt-5">
-            Le coin des joueurs
+            Le coin des Joueurs
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center justify-center w-full mx-auto gap-4 sm:gap-6">
@@ -25,12 +26,7 @@ export default function LeCoinDesPj() {
               text="Recherche"
               icon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
               className="w-[250px] sm:w-auto"
-            />
-            <Button
-              color="primary"
-              text="Filtrer"
-              icon={<FontAwesomeIcon icon={faFilter} />}
-              className="w-[250px] sm:w-auto"
+              onClick={() => setOpenRecherche(true)}
             />
             <NavLink to="/Mj">
               <Button
@@ -40,31 +36,81 @@ export default function LeCoinDesPj() {
               />
             </NavLink>
           </div>
+        </section>
 
-          <div className="mt-16 flex flex-col items-center gap-16 px-4 sm:px-20">
-            <div className="w-full max-w-5xl">
-              <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2">
-                Recherche de tables :
-              </p>
-              <div className="text-[#F2EEE8] flex flex-col sm:flex-row sm:flex-wrap gap-4">
-                {/* Contenu Dynamique */}
-              </div>
+        <section className="mt-16 flex flex-col items-center gap-16 px-4 sm:px-20">
+          <div className="w-full max-w-5xl">
+            <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2 ">
+              Recherche de tables :
+            </p>
+            <div className="text-[#F2EEE8] flex flex-col sm:flex-row sm:flex-wrap gap-4">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
+              laborum doloribus, sequi in perferendis cupiditate. Vero non
+              perferendis consectetur vel sunt dolorem, sapiente ad? Eius est
+              nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam
+              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
+              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
+              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
+              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam
+              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
+              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
+              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
+              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam fugit.lorem
             </div>
+          </div>
 
-            <div className="w-full max-w-5xl">
-              <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2">
-                Vos tables ajoutées :
-              </p>
-              <div className="text-[#F2EEE8] flex flex-col md:flex-row md:flex-wrap gap-4">
-                {/* Contenu Dynamique */}
-              </div>
+          <div className="w-full max-w-5xl">
+            <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2 ">
+              Vos tables ajoutées :
+            </p>
+            <div className="text-[#F2EEE8] flex flex-col md:flex-row md:flex-wrap gap-4">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
+              laborum doloribus, sequi in perferendis cupiditate. Vero non
+              perferendis consectetur vel sunt dolorem, sapiente ad? Eius est
+              nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam
+              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
+              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
+              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
+              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam
+              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
+              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
+              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
+              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
+              consectetur adipisicing elit. Id laborum doloribus, sequi in
+              perferendis cupiditate. Vero non perferendis consectetur vel sunt
+              dolorem, sapiente ad? Eius est nobis eligendi quam
+              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
+              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
+              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
+              est nobis eligendi quam fugit.lorem
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <Footer />
+
+      {/* Modale de recherche */}
+      {openRecherche && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <Recherche onClose={() => setOpenRecherche(false)} />
+        </div>
+      )}
     </div>
   );
 }
