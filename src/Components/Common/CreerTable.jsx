@@ -34,7 +34,7 @@ export default function CreerTable({ onClose }) {
   ];
 
   return (
-    <div className="relative w-full max-w-xl p-6 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center max-h-[75vh] overflow-y-auto">
+    <div className="relative w-full max-w-2xl p-6 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center max-h-[75vh] overflow-y-auto">
       {/* Croix pour fermer */}
       <button
         onClick={onClose}
@@ -50,19 +50,19 @@ export default function CreerTable({ onClose }) {
       </h2>
 
       {/* Titre du JdR */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">Titre du JdR</label>
         <input
           type="text"
           value={titre}
           onChange={(e) => setTitre(e.target.value)}
           placeholder="Ex: La campagne de l'éternel"
-          className="w-full h-10 px-3 rounded-full bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none"
+          className="w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
         />
       </div>
 
       {/* Lien Discord */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">
           Lien vers le salon Discord
         </label>
@@ -71,12 +71,12 @@ export default function CreerTable({ onClose }) {
           value={discord}
           onChange={(e) => setDiscord(e.target.value)}
           placeholder="https://discord.gg/..."
-          className="w-full h-10 px-3 rounded-full bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none"
+          className="w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
         />
       </div>
 
       {/* Lien Roll20 */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">
           Lien vers la table Roll20
         </label>
@@ -85,15 +85,15 @@ export default function CreerTable({ onClose }) {
           value={roll20}
           onChange={(e) => setRoll20(e.target.value)}
           placeholder="https://app.roll20.net/join/..."
-          className="w-full h-10 px-3 rounded-full bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none"
+          className="w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
         />
       </div>
 
       {/* Image de fond */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">Image de fond</label>
         <div
-          className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-[#111827] rounded-full bg-[#E9E4DA] text-[#111827] cursor-pointer hover:bg-[#d6d1c8] transition"
+          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[#111827] rounded-full bg-[#E9E4DA] text-[#111827] cursor-pointer hover:bg-[#d6d1c8] transition"
           onClick={() => document.getElementById("fileInput").click()}
         >
           <FontAwesomeIcon icon={faCloudUploadAlt} className="text-2xl mb-1" />
@@ -113,10 +113,10 @@ export default function CreerTable({ onClose }) {
       </div>
 
       {/* Nombre de joueurs */}
-      <div className="w-[95%] relative">
+      <div className="w-[90%] relative">
         <label className="font-bold mb-1 block">Nombre de joueurs</label>
         <div
-          className="flex items-center h-10 px-3 pr-8 rounded-full border border-[#111827] bg-[#E9E4DA] text-[#111827] cursor-pointer"
+          className="flex items-center w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
           onClick={() => setOpenMenu(openMenu === "joueurs" ? null : "joueurs")}
         >
           <span className="flex-grow text-sm">{nbJoueurs}</span>
@@ -144,10 +144,10 @@ export default function CreerTable({ onClose }) {
       </div>
 
       {/* Niveau */}
-      <div className="w-[95%] relative">
+      <div className="w-[90%] relative">
         <label className="font-bold mb-1 block">Niveau en JDR</label>
         <div
-          className="flex items-center h-10 px-3 pr-8 rounded-full border border-[#111827] bg-[#E9E4DA] text-[#111827] cursor-pointer"
+          className="flex items-center w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
           onClick={() => setOpenMenu(openMenu === "niveau" ? null : "niveau")}
         >
           <span className="flex-grow text-sm">{niveau}</span>
@@ -175,10 +175,10 @@ export default function CreerTable({ onClose }) {
       </div>
 
       {/* Système */}
-      <div className="w-[95%] relative">
+      <div className="w-[90%] relative">
         <label className="font-bold mb-1 block">Par Système</label>
         <div
-          className="flex items-center h-10 px-3 pr-8 rounded-full border border-[#111827] bg-[#E9E4DA] text-[#111827] cursor-pointer"
+          className="flex items-center w-full h-12 px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none"
           onClick={() => setOpenMenu(openMenu === "systeme" ? null : "systeme")}
         >
           <span className="flex-grow text-sm">{systeme}</span>
@@ -206,7 +206,7 @@ export default function CreerTable({ onClose }) {
       </div>
 
       {/* Fréquence */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">
           Fréquence ({frequence} / semaine)
         </label>
@@ -222,14 +222,14 @@ export default function CreerTable({ onClose }) {
       </div>
 
       {/* Synopsis */}
-      <div className="w-[95%]">
+      <div className="w-[90%]">
         <label className="block font-bold mb-1">Synopsis</label>
         <textarea
           value={synopsis}
           onChange={(e) => setSynopsis(e.target.value)}
           placeholder="Décrivez votre campagne..."
           rows={3}
-          className="w-full p-3 rounded-xl bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none text-sm"
+          className="w-full p-4 rounded-xl bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none text-sm"
         />
       </div>
 

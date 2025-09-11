@@ -45,6 +45,11 @@ export default function Recherche({ onClose }) {
         <FontAwesomeIcon icon={faTimes} />
       </button>
 
+      {/* Titre */}
+      <h2 className="text-xl text-[#31255b] font-bold mb-2">
+        Chercher une Table de Jeu
+      </h2>
+
       {/* Barre de recherche */}
       <input
         type="text"
@@ -165,7 +170,7 @@ export default function Recherche({ onClose }) {
       <Button
         color="secondary"
         text="Lancer une recherche"
-        className="w-[90%] md:w-[80%] h-12 py-2 rounded-full shadow-[0_5px_5px_rgba(0,0,0,0.5)]"
+        className="  h-12 py-2 rounded-full shadow-[0_5px_5px_rgba(0,0,0,0.5)]"
       />
     </div>
   );
