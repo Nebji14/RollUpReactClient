@@ -34,7 +34,7 @@ export default function CreerTable({ onClose }) {
   ];
 
   return (
-    <div className="relative w-[95%] sm:w-[90%] md:max-w-2xl p-4 sm:p-6 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center sm:max-h-[75vh] max-h-[70vh]  overflow-y-auto mt-10 sm:mt-0">
+    <div className="relative w-[95%] sm:w-[42rem] md:max-w-2xl p-4 sm:p-8 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center sm:max-h-[75vh] max-h-[70vh]  overflow-y-auto mt-10 sm:mt-0">
       {/* Croix pour fermer */}
       <button
         onClick={onClose}
