@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import Recherche from "../Components/Common/Recherche";
+import Card from "../Components/Common/TableCardsPj";
 
 export default function LeCoinDesPj() {
   const [openRecherche, setOpenRecherche] = useState(false);
@@ -44,27 +45,7 @@ export default function LeCoinDesPj() {
               Recherche de tables :
             </p>
             <div className="text-[#F2EEE8] flex flex-col sm:flex-row sm:flex-wrap gap-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-              laborum doloribus, sequi in perferendis cupiditate. Vero non
-              perferendis consectetur vel sunt dolorem, sapiente ad? Eius est
-              nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam
-              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
-              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
-              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
-              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam
-              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
-              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
-              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
-              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam fugit.lorem
+              <Card />
             </div>
           </div>
 
@@ -73,31 +54,7 @@ export default function LeCoinDesPj() {
               Vos tables ajoutées :
             </p>
             <div className="text-[#F2EEE8] flex flex-col md:flex-row md:flex-wrap gap-4">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-              laborum doloribus, sequi in perferendis cupiditate. Vero non
-              perferendis consectetur vel sunt dolorem, sapiente ad? Eius est
-              nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam
-              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
-              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
-              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
-              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam
-              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
-              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
-              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
-              est nobis eligendi quam fugit.loremLorem ipsum dolor sit amet
-              consectetur adipisicing elit. Id laborum doloribus, sequi in
-              perferendis cupiditate. Vero non perferendis consectetur vel sunt
-              dolorem, sapiente ad? Eius est nobis eligendi quam
-              fugit.loremLorem ipsum dolor sit amet consectetur adipisicing
-              elit. Id laborum doloribus, sequi in perferendis cupiditate. Vero
-              non perferendis consectetur vel sunt dolorem, sapiente ad? Eius
-              est nobis eligendi quam fugit.lorem
+              <Card /> <Card /> <Card /> <Card />
             </div>
           </div>
         </section>

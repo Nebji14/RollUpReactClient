@@ -7,7 +7,6 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import AshParticles from "../Components/Common/ParticlesBackground";
 import CreerTable from "../Components/Common/CreerTable";
-import Card from "../Components/Common/TableCards";
 
 export default function LeCoinDesMj() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,8 +54,6 @@ export default function LeCoinDesMj() {
             </p>
             <div className="text-[#111827] flex flex-col sm:flex-row sm:flex-wrap gap-4">
               {/* Contenu Dynamique */}
-
-              <Card />
             </div>
           </div>
 
