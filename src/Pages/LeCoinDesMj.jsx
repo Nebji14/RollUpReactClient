@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
 import Button from "../Components/Common/Button";
@@ -6,14 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import AshParticles from "../Components/Common/ParticlesBackground";
+import CreerTable from "../Components/Common/CreerTable";
 
 export default function LeCoinDesMj() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     // Structure principale avec fond et layout en colonne
     <div className="flex flex-col min-h-screen w-full bg-jdr-texture bg-cover bg-center bg-fixed">
       <Header />
 
-      {/* Contenu principal avec marge en haut pour laisser de l'espace au header */}
+      {/* Contenu principal */}
       <main className="flex-1 overflow-y-auto pt-32 pb-32 px-6">
         <AshParticles />
 
@@ -24,11 +27,13 @@ export default function LeCoinDesMj() {
           </h1>
 
           <div className="flex flex-col sm:flex-row items-center justify-center w-full mx-auto gap-4 sm:gap-6">
+            {/* Bouton ouvre modal */}
             <Button
               color="secondary"
               text="Créer une table"
               icon={<FontAwesomeIcon icon={faPen} />}
               className="w-[250px] sm:w-auto"
+              onClick={() => setIsModalOpen(true)}
             />
 
             <NavLink to="/Pj">
@@ -45,7 +50,7 @@ export default function LeCoinDesMj() {
         <section className="mt-16 flex flex-col items-center gap-16 px-4 sm:px-20">
           <div className="w-full max-w-5xl">
             <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
-              Recherche de tables :
+              Demandes des joueurs :
             </p>
             <div className="text-[#111827] flex flex-col sm:flex-row sm:flex-wrap gap-4">
               {/* Contenu Dynamique */}
@@ -64,6 +69,13 @@ export default function LeCoinDesMj() {
       </main>
 
       <Footer />
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <CreerTable onClose={() => setIsModalOpen(false)} />
+        </div>
+      )}
     </div>
   );
 }
