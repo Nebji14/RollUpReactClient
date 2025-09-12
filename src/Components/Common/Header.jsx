@@ -182,7 +182,7 @@ function Header() {
       {/* Header avec le dé servant de bouton menu */}
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 w-full flex justify-center z-[9999] py-2 transition-all duration-300
+        className={`fixed top-0 left-0 w-full flex justify-center z-[9998] py-2 transition-all duration-300
     ${
       scrolled || scrolledMenu
         ? lightMode
@@ -195,7 +195,7 @@ function Header() {
         <img
           src={lightMode ? de20Light : de20Dark}
           alt="Dé 20 Menu"
-          className={`w-20 cursor-pointer transition-transform duration-500 ${
+          className={`w-20  cursor-pointer transition-transform duration-500 ${
             rotate ? "animate-spin-once" : ""
           }`}
           onClick={handleDiceClick}

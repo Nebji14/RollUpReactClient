@@ -35,7 +35,7 @@ export default function Recherche({ onClose }) {
   ];
 
   return (
-    <div className="relative w-full max-w-2xl p-8 rounded-2xl shadow-xl bg-[#F2EEE8] text-[#111827] flex flex-col gap-6 items-center">
+    <div className=" relative w-full max-w-2xl p-8 rounded-2xl shadow-xl bg-[#F2EEE8] text-[#111827] flex flex-col gap-6 items-center">
       {/* Croix pour fermer */}
       <button
         onClick={onClose}
@@ -51,11 +51,14 @@ export default function Recherche({ onClose }) {
       </h2>
 
       {/* Barre de recherche */}
-      <input
-        type="text"
-        placeholder="Recherche..."
-        className="w-[90%] md:w-[80%] h-12 px-4 rounded-full bg-[#E9E4DA] border border-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] focus:outline-none"
-      />
+      <div className="w-[90%] md:w-[80%] flex flex-col gap-2">
+        <label className="font-bold mb-1 block">Recherche</label>
+        <input
+          type="text"
+          placeholder="Recherche..."
+          className="h-12 px-4 rounded-full bg-[#E9E4DA] border border-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] focus:outline-none"
+        />
+      </div>
 
       {/* GENRE */}
       <div className="w-[90%] md:w-[80%] relative">

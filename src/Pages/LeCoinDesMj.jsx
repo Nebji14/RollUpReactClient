@@ -7,6 +7,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import AshParticles from "../Components/Common/ParticlesBackground";
 import CreerTable from "../Components/Common/CreerTable";
+import JoinRequest from "../Components/Common/JoinRequest";
 
 export default function LeCoinDesMj() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -54,6 +55,7 @@ export default function LeCoinDesMj() {
             </p>
             <div className="text-[#111827] flex flex-col sm:flex-row sm:flex-wrap gap-4">
               {/* Contenu Dynamique */}
+              <JoinRequest />
             </div>
           </div>
 
@@ -72,7 +74,7 @@ export default function LeCoinDesMj() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[10000]">
           <CreerTable onClose={() => setIsModalOpen(false)} />
         </div>
       )}
