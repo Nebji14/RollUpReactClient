@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
   const initialUser = useLoaderData();
   const [userConnected, setUserConnected] = useState(initialUser); // Stocke l'utilisateur connecté
 
-  console.log(userConnected);
+  // console.log(userConnected);
 
   // Met à jour l'état avec l'utilisateur connecté
   const login = async (values) => {

@@ -7,22 +7,72 @@ import {
   faChevronUp,
   faCloudUploadAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  titre: yup.string().required("Le titre est obligatoire"),
+  discord: yup
+    .string()
+    .url("Lien invalide")
+    .required("Le lien Discord est obligatoire"),
+  roll20: yup
+    .string()
+    .url("Lien invalide")
+    .required("Le lien Roll20 est obligatoire"),
+  nbJoueurs: yup
+    .mixed()
+    .test(
+      "required",
+      "Le nombre de joueurs est obligatoire",
+      (value) => value !== "Sélectionner"
+    ),
+  niveau: yup
+    .mixed()
+    .test(
+      "required",
+      "Le niveau est obligatoire",
+      (value) => value !== "Sélectionner"
+    ),
+  systeme: yup
+    .mixed()
+    .test(
+      "required",
+      "Le système est obligatoire",
+      (value) => value !== "Sélectionner"
+    ),
+  frequence: yup.number().required("La fréquence est obligatoire"),
+  synopsis: yup.string().required("Le synopsis est obligatoire"),
+});
 
 export default function CreerTable({ onClose }) {
   const [openMenu, setOpenMenu] = useState(null);
-
-  // États
-  const [titre, setTitre] = useState("");
-  const [discord, setDiscord] = useState("");
-  const [roll20, setRoll20] = useState("");
   const [image, setImage] = useState(null);
-  const [nbJoueurs, setNbJoueurs] = useState("Sélectionner");
-  const [niveau, setNiveau] = useState("Sélectionner");
-  const [systeme, setSysteme] = useState("Sélectionner");
-  const [frequence, setFrequence] = useState(3);
-  const [synopsis, setSynopsis] = useState("");
 
-  // Données
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      titre: "",
+      discord: "",
+      roll20: "",
+      nbJoueurs: "Sélectionner",
+      niveau: "Sélectionner",
+      systeme: "Sélectionner",
+      frequence: 3,
+      synopsis: "",
+    },
+  });
+
+  // watch the frequence so we can display its current value and keep the slider fully functional
+  const frequenceValue = watch("frequence");
+
   const joueurs = Array.from({ length: 10 }, (_, i) => i + 1);
   const niveaux = ["Débutant", "Intermédiaire", "Expert"];
   const systemes = [
@@ -33,10 +83,18 @@ export default function CreerTable({ onClose }) {
     "Vampire: La Mascarade",
   ];
 
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
   return (
-    <div className="relative w-[95%] sm:w-[42rem] md:max-w-2xl p-4 sm:p-8 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center sm:max-h-[75vh] max-h-[70vh]  overflow-y-auto mt-10 sm:mt-0">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="relative w-[95%] sm:w-[42rem] md:max-w-2xl p-4 sm:p-8 rounded-2xl shadow-xl border border-[#E9E4DA] bg-donjon bg-center bg-cover text-[#F2EEE8] flex flex-col gap-5 items-center sm:max-h-[75vh] max-h-[70vh] overflow-y-auto mt-10 sm:mt-0"
+    >
       {/* Croix pour fermer */}
       <button
+        type="button"
         onClick={onClose}
         aria-label="Fermer"
         className="absolute top-3 right-4 sm:top-4 sm:right-6 text-xl sm:text-2xl text-[#F2EEE8] hover:text-[#f3cc7a]"
@@ -56,11 +114,13 @@ export default function CreerTable({ onClose }) {
         </label>
         <input
           type="text"
-          value={titre}
-          onChange={(e) => setTitre(e.target.value)}
+          {...register("titre")}
           placeholder="Ex: La campagne de l'éternel"
           className="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none text-sm sm:text-base"
         />
+        {errors.titre && (
+          <p className="text-red-500 text-xs mt-1">{errors.titre.message}</p>
+        )}
       </div>
 
       {/* Lien Discord */}
@@ -70,11 +130,13 @@ export default function CreerTable({ onClose }) {
         </label>
         <input
           type="url"
-          value={discord}
-          onChange={(e) => setDiscord(e.target.value)}
+          {...register("discord")}
           placeholder="https://discord.gg/..."
           className="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none text-sm sm:text-base"
         />
+        {errors.discord && (
+          <p className="text-red-500 text-xs mt-1">{errors.discord.message}</p>
+        )}
       </div>
 
       {/* Lien Roll20 */}
@@ -84,11 +146,13 @@ export default function CreerTable({ onClose }) {
         </label>
         <input
           type="url"
-          value={roll20}
-          onChange={(e) => setRoll20(e.target.value)}
+          {...register("roll20")}
           placeholder="https://app.roll20.net/join/..."
           className="w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] focus:outline-none text-sm sm:text-base"
         />
+        {errors.roll20 && (
+          <p className="text-red-500 text-xs mt-1">{errors.roll20.message}</p>
+        )}
       </div>
 
       {/* Image de fond */}
@@ -130,7 +194,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "joueurs" ? null : "joueurs")}
         >
-          <span className="flex-grow">{nbJoueurs}</span>
+          <span className="flex-grow">{/* kept unchanged */}</span>
           <FontAwesomeIcon
             icon={openMenu === "joueurs" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -143,7 +207,7 @@ export default function CreerTable({ onClose }) {
                 key={idx}
                 className="px-3 py-1 cursor-pointer rounded-lg hover:bg-[#6c5ebf] hover:text-white"
                 onClick={() => {
-                  setNbJoueurs(j);
+                  setValue("nbJoueurs", j);
                   setOpenMenu(null);
                 }}
               >
@@ -151,6 +215,11 @@ export default function CreerTable({ onClose }) {
               </div>
             ))}
           </div>
+        )}
+        {errors.nbJoueurs && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.nbJoueurs.message}
+          </p>
         )}
       </div>
 
@@ -163,7 +232,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "niveau" ? null : "niveau")}
         >
-          <span className="flex-grow">{niveau}</span>
+          <span className="flex-grow">{/* kept unchanged */}</span>
           <FontAwesomeIcon
             icon={openMenu === "niveau" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -176,7 +245,7 @@ export default function CreerTable({ onClose }) {
                 key={idx}
                 className="px-3 py-1 cursor-pointer rounded-lg hover:bg-[#6c5ebf] hover:text-white"
                 onClick={() => {
-                  setNiveau(n);
+                  setValue("niveau", n);
                   setOpenMenu(null);
                 }}
               >
@@ -184,6 +253,9 @@ export default function CreerTable({ onClose }) {
               </div>
             ))}
           </div>
+        )}
+        {errors.niveau && (
+          <p className="text-red-500 text-xs mt-1">{errors.niveau.message}</p>
         )}
       </div>
 
@@ -196,7 +268,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "systeme" ? null : "systeme")}
         >
-          <span className="flex-grow">{systeme}</span>
+          <span className="flex-grow">{/* kept unchanged */}</span>
           <FontAwesomeIcon
             icon={openMenu === "systeme" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -209,7 +281,7 @@ export default function CreerTable({ onClose }) {
                 key={idx}
                 className="px-3 py-1 cursor-pointer rounded-lg hover:bg-[#6c5ebf] hover:text-white"
                 onClick={() => {
-                  setSysteme(s);
+                  setValue("systeme", s);
                   setOpenMenu(null);
                 }}
               >
@@ -218,24 +290,33 @@ export default function CreerTable({ onClose }) {
             ))}
           </div>
         )}
+        {errors.systeme && (
+          <p className="text-red-500 text-xs mt-1">{errors.systeme.message}</p>
+        )}
       </div>
 
-      {/* Fréquence */}
+      {/* Fréquence (CORRIGÉ) */}
       <div className="w-full sm:w-[90%]">
         <label className="block font-bold mb-1 text-sm sm:text-base">
-          Fréquence ({frequence} / semaine)
+          Fréquence ({Number(frequenceValue)} / semaine)
         </label>
         <input
           type="range"
           min="1"
           max="7"
-          value={frequence}
-          onChange={(e) => setFrequence(e.target.value)}
+          {...register("frequence")}
+          value={frequenceValue}
+          onChange={(e) => setValue("frequence", Number(e.target.value))}
           className="w-full accent-[#3E3A4D]"
         />
         <div className="text-xs sm:text-sm mt-1">
           1 jour — 7 jours / semaine
         </div>
+        {errors.frequence && (
+          <p className="text-red-500 text-xs mt-1">
+            {errors.frequence.message}
+          </p>
+        )}
       </div>
 
       {/* Synopsis */}
@@ -244,20 +325,23 @@ export default function CreerTable({ onClose }) {
           Synopsis
         </label>
         <textarea
-          value={synopsis}
-          onChange={(e) => setSynopsis(e.target.value)}
+          {...register("synopsis")}
           placeholder="Décrivez votre campagne..."
           rows={3}
           className="w-full p-2 sm:p-4 rounded-xl bg-[#E9E4DA] text-[#111827] border border-[#111827] focus:outline-none text-xs sm:text-sm"
         />
+        {errors.synopsis && (
+          <p className="text-red-500 text-xs mt-1">{errors.synopsis.message}</p>
+        )}
       </div>
 
       {/* Bouton final */}
       <Button
+        type="submit"
         color="secondary"
         text="Créer une table"
         className="py-2 rounded-full text-sm sm:text-base"
       />
-    </div>
+    </form>
   );
 }
