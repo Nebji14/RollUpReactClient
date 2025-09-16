@@ -9,7 +9,10 @@ import { signIn } from "../../../api/auth.api";
 export default function Login({ hidden, onShowRegister }) {
   const navigate = useNavigate();
   const { login } = useAuth();
-
+  const defaultValues = {
+    pseudo: "",
+    password: "",
+  };
   // Validation avec Yup
   const schema = yup.object().shape({
     pseudo: yup
@@ -31,10 +34,7 @@ export default function Login({ hidden, onShowRegister }) {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      pseudo: "",
-      password: "",
-    },
+    defaultValues,
   });
 
   // Fonction de soumission du formulaire
