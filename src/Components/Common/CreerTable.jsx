@@ -194,7 +194,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "joueurs" ? null : "joueurs")}
         >
-          <span className="flex-grow">{/* kept unchanged */}</span>
+          <span className="flex-grow">{watch("nbJoueurs")}</span>
           <FontAwesomeIcon
             icon={openMenu === "joueurs" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -232,7 +232,9 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "niveau" ? null : "niveau")}
         >
-          <span className="flex-grow">{/* kept unchanged */}</span>
+          <span className="flex-grow">
+            <span className="flex-grow">{watch("niveau")}</span>
+          </span>
           <FontAwesomeIcon
             icon={openMenu === "niveau" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -268,7 +270,9 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "systeme" ? null : "systeme")}
         >
-          <span className="flex-grow">{/* kept unchanged */}</span>
+          <span className="flex-grow">
+            <span className="flex-grow">{watch("systeme")}</span>
+          </span>
           <FontAwesomeIcon
             icon={openMenu === "systeme" ? faChevronUp : faChevronDown}
             className="absolute right-3"
