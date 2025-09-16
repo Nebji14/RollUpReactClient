@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import AshParticles from "../Components/Common/ParticlesBackground";
-import CreerTable from "../Components/Common/CreerTable";
+import CreerTable from "../Components/Common/CreateTable";
 import JoinRequest from "../Components/Common/JoinRequest";
 
 export default function LeCoinDesMj() {

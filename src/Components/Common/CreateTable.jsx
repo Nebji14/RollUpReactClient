@@ -10,6 +10,7 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { addTable } from "../../api/table.api";
 
 const schema = yup.object().shape({
   titre: yup.string().required("Le titre est obligatoire"),
@@ -83,8 +84,14 @@ export default function CreerTable({ onClose }) {
     "Vampire: La Mascarade",
   ];
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    //console.log(data);
+    try {
+      const newTable = await addTable(data);
+      console.log(newTable);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
