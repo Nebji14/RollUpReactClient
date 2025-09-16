@@ -6,11 +6,14 @@ import {
   faChevronDown,
   faChevronUp,
   faCloudUploadAlt,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { addTable } from "../../api/table.api";
+import { uploadImage } from "../../lib/uploadService"; // import upload supabase
+import toast from "react-hot-toast"; // import du toast
 
 const schema = yup.object().shape({
   titre: yup.string().required("Le titre est obligatoire"),
@@ -49,7 +52,7 @@ const schema = yup.object().shape({
 
 export default function CreerTable({ onClose }) {
   const [openMenu, setOpenMenu] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null); // image sélectionnée
 
   const {
     register,
@@ -71,7 +74,6 @@ export default function CreerTable({ onClose }) {
     },
   });
 
-  // watch the frequence so we can display its current value and keep the slider fully functional
   const frequenceValue = watch("frequence");
 
   const joueurs = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -84,13 +86,30 @@ export default function CreerTable({ onClose }) {
     "Vampire: La Mascarade",
   ];
 
+  // soumission formulaire
   const onSubmit = async (data) => {
-    //console.log(data);
     try {
-      const newTable = await addTable(data);
-      console.log(newTable);
+      // si une image est présente on l'upload sur Supabase
+      if (image) {
+        const publicUrl = await uploadImage(image);
+        data.image = publicUrl; // on ajoute l'URL de l'image au payload
+      }
+
+      await addTable(data); // envoi en base
+      toast.success("Table Créée"); // toast de confirmation
+      onClose(); // fermeture du modal
     } catch (error) {
       console.log(error);
+      toast.error("Erreur lors de la création de la table");
+    }
+  };
+
+  // gestion drag & drop d'image (1 seule autorisée)
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith("image/")) {
+      setImage(file);
     }
   };
 
@@ -109,7 +128,6 @@ export default function CreerTable({ onClose }) {
         <FontAwesomeIcon icon={faTimes} />
       </button>
 
-      {/* Titre */}
       <h2 className="text-lg sm:text-xl text-[#f3cc7a] font-bold mb-2 text-center">
         Créer une table de jeu
       </h2>
@@ -162,7 +180,7 @@ export default function CreerTable({ onClose }) {
         )}
       </div>
 
-      {/* Image de fond */}
+      {/* Image de fond avec drag & drop + suppression */}
       <div className="w-full sm:w-[90%]">
         <label className="block font-bold mb-1 text-sm sm:text-base">
           Image de fond
@@ -170,13 +188,28 @@ export default function CreerTable({ onClose }) {
         <div
           className="flex flex-col items-center justify-center w-full h-24 sm:h-32 border-2 border-dashed border-[#111827] rounded-xl bg-[#E9E4DA] text-[#111827] cursor-pointer hover:bg-[#d6d1c8] transition text-sm sm:text-base"
           onClick={() => document.getElementById("fileInput").click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={handleDrop} // gestion drop
         >
           <FontAwesomeIcon
             icon={faCloudUploadAlt}
             className="text-xl sm:text-2xl mb-1"
           />
           {image ? (
-            <span className="text-xs sm:text-sm">{image.name}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm">{image.name}</span>
+              {/* bouton suppression image */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setImage(null);
+                }}
+                className="text-red-600 hover:text-red-800"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </div>
           ) : (
             <span className="text-xs sm:text-sm">
               Cliquez ou déposez une image
@@ -306,7 +339,7 @@ export default function CreerTable({ onClose }) {
         )}
       </div>
 
-      {/* Fréquence (CORRIGÉ) */}
+      {/* Fréquence */}
       <div className="w-full sm:w-[90%]">
         <label className="block font-bold mb-1 text-sm sm:text-base">
           Fréquence ({Number(frequenceValue)} / semaine)
