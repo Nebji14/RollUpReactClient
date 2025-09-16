@@ -186,7 +186,7 @@ export default function CreerTable({ onClose }) {
           Image de fond
         </label>
         <div
-          className="flex flex-col items-center justify-center w-full h-24 sm:h-32 border-2 border-dashed border-[#111827] rounded-xl bg-[#E9E4DA] text-[#111827] cursor-pointer hover:bg-[#d6d1c8] transition text-sm sm:text-base"
+          className="flex flex-col items-center justify-center w-full min-h-24 sm:min-h-32 border-2 border-dashed border-[#111827] rounded-xl bg-[#E9E4DA] text-[#111827] cursor-pointer hover:bg-[#d6d1c8] transition text-sm sm:text-base p-3"
           onClick={() => document.getElementById("fileInput").click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop} // gestion drop
@@ -196,25 +196,38 @@ export default function CreerTable({ onClose }) {
             className="text-xl sm:text-2xl mb-1"
           />
           {image ? (
-            <div className="flex items-center gap-2">
-              <span className="text-xs sm:text-sm">{image.name}</span>
-              {/* bouton suppression image */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setImage(null);
-                }}
-                className="text-red-600 hover:text-red-800"
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+            <div className="flex flex-col items-center gap-2 w-full">
+              {/* Aperçu miniature centré */}
+              <img
+                src={URL.createObjectURL(image)}
+                alt="aperçu"
+                className="w-24 h-24 object-cover rounded-md border border-[#111827]"
+              />
+
+              {/* Nom + poubelle, largeur adaptative */}
+              <div className="flex items-center gap-2 justify-center max-w-full">
+                <span className="text-xs sm:text-sm truncate max-w-[150px] text-center">
+                  {image.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setImage(null);
+                  }}
+                  className="text-red-600 hover:text-red-800 text-lg sm:text-xl flex items-center justify-center"
+                  style={{ width: "28px", height: "28px", borderRadius: "50%" }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </div>
             </div>
           ) : (
-            <span className="text-xs sm:text-sm">
+            <span className="text-xs sm:text-sm text-center">
               Cliquez ou déposez une image
             </span>
           )}
+
           <input
             id="fileInput"
             type="file"
