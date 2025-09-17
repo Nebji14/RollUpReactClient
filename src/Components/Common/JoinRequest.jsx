@@ -21,16 +21,20 @@ export default function JoinRequest() {
   };
 
   return (
-    <div className="shadow-[0_5px_5px_rgba(0,0,0,0.65)]  bg-[#E9E4DA] text-[#111827] rounded-xl p-4  w-fit">
-      <h2 className="text-lg font-bold text-center">{pseudo}</h2>
-      <p className="text-center mt-1">Demande a rejoindre la table :</p>
+    <div className="shadow-[0_5px_5px_rgba(0,0,0,0.65)] bg-[#E9E4DA] text-[#111827] rounded-xl p-4 sm:p-6 w-full max-w-sm mx-auto">
+      <h2 className="text-lg sm:text-xl font-bold text-center break-words">
+        {pseudo}
+      </h2>
+      <p className="text-center mt-1 text-sm sm:text-base">
+        Demande a rejoindre la table :
+      </p>
 
-      <div className="flex justify-center gap-4 mt-3">
+      <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-4">
         <Button
           color="secondary"
           text="Accepter"
           icon={<FontAwesomeIcon icon={faCheck} />}
-          className="w-[250px] sm:w-auto"
+          className="w-full sm:w-auto"
           onClick={handleAccept}
         />
 
@@ -38,7 +42,7 @@ export default function JoinRequest() {
           color="secondary"
           text="Refuser"
           icon={<FontAwesomeIcon icon={faTimes} />}
-          className="w-[250px] sm:w-auto"
+          className="w-full sm:w-auto"
           onClick={handleReject}
         />
       </div>

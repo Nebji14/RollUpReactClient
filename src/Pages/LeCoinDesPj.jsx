@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import Recherche from "../Components/Common/Recherche";
-import Card from "../Components/Common/TableCardsPj";
 
 export default function LeCoinDesPj() {
   const [openRecherche, setOpenRecherche] = useState(false);
@@ -44,18 +43,14 @@ export default function LeCoinDesPj() {
             <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2 ">
               Recherche de tables :
             </p>
-            <div className="text-[#F2EEE8] flex flex-col sm:flex-row sm:flex-wrap gap-4">
-              <Card />
-            </div>
+            <div className="text-[#F2EEE8] flex flex-col sm:flex-row sm:flex-wrap gap-4"></div>
           </div>
 
           <div className="w-full max-w-5xl">
             <p className="font-semibold text-[#F2EEE8] text-[20px] mb-2 ">
               Vos tables ajoutées :
             </p>
-            <div className="text-[#F2EEE8] flex flex-col md:flex-row md:flex-wrap gap-4">
-              <Card /> <Card /> <Card /> <Card />
-            </div>
+            <div className="text-[#F2EEE8] flex flex-col md:flex-row md:flex-wrap gap-4"></div>
           </div>
         </section>
       </main>

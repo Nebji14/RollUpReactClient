@@ -9,8 +9,15 @@ import AshParticles from "../Components/Common/ParticlesBackground";
 import CreerTable from "../Components/Common/CreateTable";
 import JoinRequest from "../Components/Common/JoinRequest";
 
+// Import du context et de la Card
+import { useTable } from "../context/TableContext";
+import TableCard from "../Components/Common/TableCardsPj";
+
 export default function LeCoinDesMj() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Récupération des tables via le contexte
+  const { tables } = useTable();
 
   return (
     // Structure principale avec fond et layout en colonne
@@ -49,6 +56,7 @@ export default function LeCoinDesMj() {
 
         {/* Section avec deux blocs : recherche de tables + tables ajoutées */}
         <section className="mt-16 flex flex-col items-center gap-16 px-4 sm:px-20">
+          {/* Demandes des joueurs : NE PAS TOUCHER */}
           <div className="w-full max-w-5xl">
             <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
               Demandes des joueurs :
@@ -59,12 +67,29 @@ export default function LeCoinDesMj() {
             </div>
           </div>
 
+          {/* VOS TABLES AJOUTÉES */}
           <div className="w-full max-w-5xl">
             <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
               Vos tables ajoutées :
             </p>
             <div className="text-[#111827] flex flex-col md:flex-row md:flex-wrap gap-4">
-              {/* Contenu Dynamique */}
+              {tables.length > 0 ? (
+                tables.map((table) => (
+                  <TableCard
+                    key={table._id}
+                    table={table}
+                    isCoinDesMj={true} // ici fait apparaitre le btn SUPPRIMER
+                    buttonText="Modifier la table"
+                    onButtonClick={() => {
+                      //console.log("Modifier la table :", t);
+                      // Ouvre la modale de modification
+                      setIsModalOpen(true);
+                    }}
+                  />
+                ))
+              ) : (
+                <p>Aucune table ajoutée pour l'instant.</p>
+              )}
             </div>
           </div>
         </section>

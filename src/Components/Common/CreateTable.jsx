@@ -11,9 +11,9 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { addTable } from "../../api/table.api";
 import { uploadImage } from "../../lib/uploadService"; // import upload supabase
 import toast from "react-hot-toast"; // import du toast
+import { useTable } from "../../context/TableContext"; // IMPORT DU CONTEXTE
 
 const schema = yup.object().shape({
   titre: yup.string().required("Le titre est obligatoire"),
@@ -53,6 +53,8 @@ const schema = yup.object().shape({
 export default function CreerTable({ onClose }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [image, setImage] = useState(null); // image sélectionnée
+
+  const { addTable } = useTable(); // UTILISATION DU CONTEXTE
 
   const {
     register,
@@ -95,7 +97,7 @@ export default function CreerTable({ onClose }) {
         data.image = publicUrl; // on ajoute l'URL de l'image au payload
       }
 
-      await addTable(data); // envoi en base
+      await addTable(data); // APPEL DU CONTEXTE POUR AJOUT INSTANTANÉ DE CARD
       toast.success("Table Créée"); // toast de confirmation
       onClose(); // fermeture du modal
     } catch (error) {
@@ -197,14 +199,11 @@ export default function CreerTable({ onClose }) {
           />
           {image ? (
             <div className="flex flex-col items-center gap-2 w-full">
-              {/* Aperçu miniature centré */}
               <img
                 src={URL.createObjectURL(image)}
                 alt="aperçu"
                 className="w-24 h-24 object-cover rounded-md border border-[#111827]"
               />
-
-              {/* Nom + poubelle, largeur adaptative */}
               <div className="flex items-center gap-2 justify-center max-w-full">
                 <span className="text-xs sm:text-sm truncate max-w-[150px] text-center">
                   {image.name}
@@ -285,9 +284,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "niveau" ? null : "niveau")}
         >
-          <span className="flex-grow">
-            <span className="flex-grow">{watch("niveau")}</span>
-          </span>
+          <span className="flex-grow">{watch("niveau")}</span>
           <FontAwesomeIcon
             icon={openMenu === "niveau" ? faChevronUp : faChevronDown}
             className="absolute right-3"
@@ -323,9 +320,7 @@ export default function CreerTable({ onClose }) {
           className="flex items-center w-full h-10 sm:h-12 px-3 sm:px-4 rounded-full bg-[#E9E4DA] text-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] border border-[#111827] cursor-pointer text-sm sm:text-base"
           onClick={() => setOpenMenu(openMenu === "systeme" ? null : "systeme")}
         >
-          <span className="flex-grow">
-            <span className="flex-grow">{watch("systeme")}</span>
-          </span>
+          <span className="flex-grow">{watch("systeme")}</span>
           <FontAwesomeIcon
             icon={openMenu === "systeme" ? faChevronUp : faChevronDown}
             className="absolute right-3"

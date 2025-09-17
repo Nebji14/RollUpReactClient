@@ -1,66 +1,96 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "./Button";
 
-const Card = () => {
+export default function TableCard({
+  table,
+  buttonText,
+  onButtonClick,
+  isCoinDesMj,
+}) {
   const [isJoined, setIsJoined] = useState(false);
 
   const handleToggle = () => {
-    setIsJoined(!isJoined);
+    if (onButtonClick) {
+      onButtonClick(table);
+    } else {
+      setIsJoined(!isJoined);
+    }
   };
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden shadow-xl bg-[#F2EEE8] text-[#111827] rounded-[20px]">
-      {/* IMAGE (récupérée du backend) */}
+    <div className="flex flex-col md:flex-row overflow-hidden shadow-xl bg-[#F2EEE8] text-[#111827] rounded-[20px] hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
+      {/* IMAGE */}
       <div className="w-full md:w-1/2">
-        <div className="h-48 md:h-full w-full rounded-t-[20px] md:rounded-t-none md:rounded-l-[20px] border-2 border-[#3E3A4D] overflow-hidden">
+        <div className="h-full w-full rounded-t-[20px] md:rounded-t-none md:rounded-l-[20px] border-2 border-[#3E3A4D] overflow-hidden flex items-center justify-center">
           <img
-            src={"backendImageUrl"}
-            alt="illustration"
-            className="h-full w-full object-cover"
+            src={table.image || "/placeholder.jpg"}
+            alt={table.titre}
+            className="min-h-full min-w-full object-cover"
           />
         </div>
       </div>
 
-      {/* CONTENU TEXTE */}
+      {/* CONTENU */}
       <div className="w-full md:w-1/2 flex flex-col justify-between p-4">
         <div>
-          {/* TITRE */}
-          <h2 className="text-xl font-bold mb-2">La Lueur sous les Ruines</h2>
-
-          {/* INFOS DE BASE */}
+          <h2 className="text-xl font-bold mb-2">{table.titre}</h2>
           <ul className="text-sm mb-4 space-y-1">
-            <li>Lien Discord</li>
-            <li>Lien Roll20</li>
             <li>
-              Joueurs : {/* {backendNombreJoueurs} */}/
-              {/* {backendNombreJoueursMax} */}
+              <a
+                href={table.discord}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Lien Discord
+              </a>
             </li>
-            <li>Débutant</li>
-            <li>Aventure / Horreur légère</li>
-            <li>2 Fois / Semaine</li>
-            <li>Chroniques Oubliées Fantasy (d20)</li>
+            <li>
+              <a
+                href={table.roll20}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                Lien Roll20
+              </a>
+            </li>
+            <li>Joueurs : {table.nbJoueurs}/10</li>
+            <li>{table.niveau}</li>
+            <li>{table.systeme}</li>
+            <li>{table.frequence} fois / semaine</li>
           </ul>
 
-          {/* DESCRIPTION */}
-          <div className="rounded-[10px] p-2 text-sm overflow-y-auto max-h-32 bg-[#E9E4DA]">
-            Un vieux village minier cache un réseau de tunnels oubliés, d'où
-            filtre une étrange lueur. Vous incarnez des envoyés de la
-            Exploration, ambiance sombre ambiance sombre et...
+          {/* LABEL SYNOPSIS */}
+          <p className="text-sm font-semibold mb-1">Synopsis</p>
+          <div className="rounded-[10px] p-2 text-sm bg-[#E9E4DA] whitespace-pre-wrap break-words h-40 overflow-y-auto">
+            {table.synopsis}
           </div>
         </div>
 
-        {/* BOUTON */}
-        <div className="mt-4">
+        {/* BOUTONS */}
+        <div className="mt-4 flex flex-col sm:flex-row gap-2">
           <Button
             color="secondary"
-            text={isJoined ? "Quitter la table" : "Rejoindre la table"}
+            text={
+              buttonText ||
+              (isJoined ? "Quitter la table" : "Rejoindre la table")
+            }
             className="w-full sm:w-auto"
             onClick={handleToggle}
           />
+
+          {/* BOUTON SUPPRIMER UNIQUEMENT SUR CoinDesMj */}
+          {isCoinDesMj && (
+            <Button
+              color="secondary"
+              text="Supprimer cette table"
+              className="w-full sm:w-auto"
+              onClick={() => console.log("Suppression en cours...")}
+            />
+          )}
         </div>
       </div>
     </div>
   );
-};
-
-export default Card;
+}
