@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
 import Button from "../Components/Common/Button";
@@ -12,12 +12,13 @@ import JoinRequest from "../Components/Common/JoinRequest";
 // Import du context et de la Card
 import { useTable } from "../context/TableContext";
 import TableCard from "../Components/Common/TableCardsPj";
+import { useAuth } from "../context/AuthContext";
 
 export default function LeCoinDesMj() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Récupération des tables via le contexte
-  const { tables } = useTable();
+  const { allMyTables } = useTable();
 
   return (
     // Structure principale avec fond et layout en colonne
@@ -73,8 +74,8 @@ export default function LeCoinDesMj() {
               Vos tables ajoutées :
             </p>
             <div className="text-[#111827] flex flex-col md:flex-row md:flex-wrap gap-4">
-              {tables.length > 0 ? (
-                tables.map((table) => (
+              {allMyTables.length > 0 ? (
+                allMyTables.map((table) => (
                   <TableCard
                     key={table._id}
                     table={table}

@@ -5,12 +5,21 @@ import {
   deleteTable as deleteTableApi,
 } from "../api/table.api";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthContext";
 
 const TableContext = createContext();
 
 export function TableProvider({ children }) {
   const [tables, setTables] = useState([]);
+  const [allMyTables, setallMyTables] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { userConnected } = useAuth();
+
+  useEffect(() => {
+    setallMyTables(
+      tables.filter((t) => t.user.pseudo === userConnected.pseudo)
+    );
+  }, [tables, userConnected]);
 
   // Charger les tables au montage
   useEffect(() => {
@@ -51,7 +60,9 @@ export function TableProvider({ children }) {
   };
 
   return (
-    <TableContext.Provider value={{ tables, addTable, removeTable, loading }}>
+    <TableContext.Provider
+      value={{ tables, addTable, removeTable, loading, allMyTables }}
+    >
       {children}
     </TableContext.Provider>
   );
