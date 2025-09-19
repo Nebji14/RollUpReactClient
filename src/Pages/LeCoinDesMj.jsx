@@ -18,7 +18,10 @@ export default function LeCoinDesMj() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Récupération des tables via le contexte
-  const { allMyTables } = useTable();
+  const { tables } = useTable();
+  const { userConnected } = useAuth();
+
+  console.log("tables mj", tables);
 
   return (
     // Structure principale avec fond et layout en colonne
@@ -74,19 +77,21 @@ export default function LeCoinDesMj() {
               Vos tables ajoutées :
             </p>
             <div className="text-[#111827] flex flex-col md:flex-row md:flex-wrap gap-4">
-              {allMyTables.length > 0 ? (
-                allMyTables.map((table) => (
-                  <TableCard
-                    key={table._id}
-                    table={table}
-                    isCoinDesMj={true} //fait apparaitre le btn Supprimer
-                    buttonText="Modifier la table"
-                    onButtonClick={() => {
-                      //console.log("Modifier la table :", t);
-                      // Ouvre la modale de modification
-                    }}
-                  />
-                ))
+              {tables.length > 0 ? (
+                tables
+                  .filter((t) => t.user.pseudo === userConnected.pseudo)
+                  .map((table) => (
+                    <TableCard
+                      key={table._id}
+                      table={table}
+                      isCoinDesMj={true} //fait apparaitre le btn Supprimer
+                      buttonText="Modifier la table"
+                      // onButtonClick={() => {
+                      //   //console.log("Modifier la table :", t);
+                      //   // Ouvre la modale de modification
+                      // }}
+                    />
+                  ))
               ) : (
                 <p>Aucune table ajoutée pour l'instant.</p>
               )}

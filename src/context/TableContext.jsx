@@ -11,15 +11,11 @@ const TableContext = createContext();
 
 export function TableProvider({ children }) {
   const [tables, setTables] = useState([]);
-  const [allMyTables, setallMyTables] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const { userConnected } = useAuth();
 
-  useEffect(() => {
-    setallMyTables(
-      tables.filter((t) => t.user.pseudo === userConnected.pseudo)
-    );
-  }, [tables, userConnected]);
+  console.log({ tables });
 
   // Charger les tables au montage
   useEffect(() => {
@@ -39,13 +35,25 @@ export function TableProvider({ children }) {
   // Ajouter une table et met à jour instantanément
   const addTable = async (values) => {
     try {
-      const newTable = await addTableApi(values); // appel à l'API
-      setTables((prevTables) => [newTable, ...prevTables]); // ajout instantané
+      console.log("Context: Ajout d'une table...", values);
+      const newTable = await addTableApi(values);
+      console.log("Context: Table reçue de l'API:", newTable);
+      setTables((prevTables) => [
+        {
+          ...newTable,
+          user: {
+            ...(newTable.user || {}),
+            pseudo: userConnected.pseudo,
+            email: userConnected.email,
+          },
+        },
+        ...prevTables,
+      ]);
     } catch (error) {
-      console.error("Erreur lors de l'ajout de la table :", error);
+      console.error("Context: Erreur lors de l'ajout:", error);
+      throw error;
     }
   };
-
   //Supprimer une Table
 
   const removeTable = async (id) => {
@@ -60,9 +68,7 @@ export function TableProvider({ children }) {
   };
 
   return (
-    <TableContext.Provider
-      value={{ tables, addTable, removeTable, loading, allMyTables }}
-    >
+    <TableContext.Provider value={{ tables, addTable, removeTable, loading }}>
       {children}
     </TableContext.Provider>
   );
