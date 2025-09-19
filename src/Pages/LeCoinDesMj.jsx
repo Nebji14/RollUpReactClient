@@ -67,7 +67,7 @@ export default function LeCoinDesMj() {
             </div>
           </div>
 
-          {/* VOS TABLES AJOUTÉES */}
+          {/* Les tables ajoutés */}
           <div className="w-full max-w-5xl">
             <p className="font-semibold text-[#111827] text-[20px] mb-2 ">
               Vos tables ajoutées :
@@ -78,12 +78,11 @@ export default function LeCoinDesMj() {
                   <TableCard
                     key={table._id}
                     table={table}
-                    isCoinDesMj={true} // ici fait apparaitre le btn SUPPRIMER
+                    isCoinDesMj={true} //fait apparaitre le btn Supprimer
                     buttonText="Modifier la table"
                     onButtonClick={() => {
                       //console.log("Modifier la table :", t);
                       // Ouvre la modale de modification
-                      setIsModalOpen(true);
                     }}
                   />
                 ))

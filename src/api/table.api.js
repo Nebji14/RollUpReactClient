@@ -45,3 +45,23 @@ export async function addTable(values) {
     console.error(error);
   }
 }
+
+//Supprimer une table
+export async function deleteTable(id) {
+  try {
+    const response = await fetch(`${BASE_URL}/tables/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Erreur lors de la suppression de la table");
+    }
+    return await response.json(); // message de confirmation
+  } catch (error) {
+    console.log(error);
+  }
+}

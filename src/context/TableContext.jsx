@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getTablesFromApi, addTable as addTableApi } from "../api/table.api";
+import {
+  getTablesFromApi,
+  addTable as addTableApi,
+  deleteTable as deleteTableApi,
+} from "../api/table.api";
+import toast from "react-hot-toast";
 
 const TableContext = createContext();
 
@@ -22,7 +27,7 @@ export function TableProvider({ children }) {
     fetchTables();
   }, []);
 
-  // Ajouter une table et mettre à jour instantanément
+  // Ajouter une table et met à jour instantanément
   const addTable = async (values) => {
     try {
       const newTable = await addTableApi(values); // appel à l'API
@@ -32,8 +37,21 @@ export function TableProvider({ children }) {
     }
   };
 
+  //Supprimer une Table
+
+  const removeTable = async (id) => {
+    try {
+      await deleteTableApi(id); //Appel API
+      setTables((prevTables) => prevTables.filter((t) => t._id !== id)); // mise à jour instantanée
+      toast.success("La table a été supprimée");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erreur lors de la suppression");
+    }
+  };
+
   return (
-    <TableContext.Provider value={{ tables, addTable, loading }}>
+    <TableContext.Provider value={{ tables, addTable, removeTable, loading }}>
       {children}
     </TableContext.Provider>
   );

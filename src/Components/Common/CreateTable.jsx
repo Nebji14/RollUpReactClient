@@ -13,7 +13,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { uploadImage } from "../../lib/uploadService"; // import upload supabase
 import toast from "react-hot-toast"; // import du toast
-import { useTable } from "../../context/TableContext"; // IMPORT DU CONTEXTE
+import { useTable } from "../../context/TableContext"; // Import du context
 
 const schema = yup.object().shape({
   titre: yup.string().required("Le titre est obligatoire"),
@@ -54,7 +54,7 @@ export default function CreerTable({ onClose }) {
   const [openMenu, setOpenMenu] = useState(null);
   const [image, setImage] = useState(null); // image sélectionnée
 
-  const { addTable } = useTable(); // UTILISATION DU CONTEXTE
+  const { addTable } = useTable(); // Utilisation du context
 
   const {
     register,
@@ -97,7 +97,7 @@ export default function CreerTable({ onClose }) {
         data.image = publicUrl; // on ajoute l'URL de l'image au payload
       }
 
-      await addTable(data); // APPEL DU CONTEXTE POUR AJOUT INSTANTANÉ DE CARD
+      await addTable(data); // Appel du context pour ajout des cards iinstantannée
       toast.success("Table Créée"); // toast de confirmation
       onClose(); // fermeture du modal
     } catch (error) {

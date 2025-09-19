@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./Button";
+import { useTable } from "../../context/TableContext";
 
 export default function TableCard({
   table,
@@ -16,6 +17,7 @@ export default function TableCard({
       setIsJoined(!isJoined);
     }
   };
+  const { removeTable } = useTable();
 
   return (
     <div className="flex flex-col md:flex-row overflow-hidden shadow-xl bg-[#F2EEE8] text-[#111827] rounded-[20px] hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]">
@@ -86,7 +88,7 @@ export default function TableCard({
               color="secondary"
               text="Supprimer cette table"
               className="w-full sm:w-auto"
-              onClick={() => console.log("Suppression en cours...")}
+              onClick={() => removeTable(table._id)}
             />
           )}
         </div>
