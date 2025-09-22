@@ -25,11 +25,11 @@ export default function LeCoinDesMj() {
 
   return (
     // Structure principale avec fond et layout en colonne
-    <div className="flex flex-col min-h-screen w-full bg-jdr-texture bg-cover bg-center bg-fixed">
+    <div className="flex flex-col min-h-auto md:min-h-screen w-full bg-jdr-texture bg-cover bg-center bg-fixed">
       <Header />
 
       {/* Contenu principal */}
-      <main className="flex-1 overflow-y-auto pt-32 pb-32 px-6">
+      <main className="flex-1 overflow-y-auto pt-18 md:pt-32 pb-32 px-6">
         <AshParticles />
 
         {/* Section titre + boutons d'action */}
@@ -100,8 +100,13 @@ export default function LeCoinDesMj() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[10000]">
-          <CreerTable onClose={() => setIsModalOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[10000]"
+          onClick={() => setIsModalOpen(false)} // clic sur le fond pour fermer
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <CreerTable onClose={() => setIsModalOpen(false)} />
+          </div>
         </div>
       )}
     </div>

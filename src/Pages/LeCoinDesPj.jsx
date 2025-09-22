@@ -11,10 +11,10 @@ export default function LeCoinDesPj() {
   const [openRecherche, setOpenRecherche] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-donjon bg-cover bg-center bg-fixed">
+    <div className="flex flex-col min-h-auto md:min-h-screen w-full bg-donjon bg-cover bg-center bg-fixed">
       <Header />
 
-      <main className="flex-1 overflow-y-auto pt-32 pb-32 px-6">
+      <main className="flex-1 overflow-y-auto pt-18 md:pt-32 pb-32 px-6">
         <section className="w-full max-w-5xl mx-auto px-6">
           <h1 className="text-center text-[32px] font-bold text-[#F3CC7A] mb-8 mt-5">
             Le coin des Joueurs

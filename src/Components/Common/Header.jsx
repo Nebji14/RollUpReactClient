@@ -182,7 +182,8 @@ function Header() {
       {/* Header avec le dé servant de bouton menu */}
       <header
         ref={headerRef}
-        className={`fixed top-0 left-0 w-full flex justify-center z-[9998] py-2 transition-all duration-300
+        className={`top-0 left-0 w-full flex justify-center z-[9998] py-2 transition-all duration-300
+    md:fixed 
     ${
       scrolled || scrolledMenu
         ? lightMode

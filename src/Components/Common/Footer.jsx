@@ -12,13 +12,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer
-      className="
-    w-full bg-[#3E3A4D] sticky  bottom-0
-    flex flex-col md:flex-row items-center md:items-center justify-between
-    px-6 md:px-8 py-3
-  "
-    >
+    <footer className="w-full bg-[#3E3A4D] relative md:sticky md:bottom-0 flex flex-col md:flex-row items-center justify-between px-6 md:px-8 py-3">
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-t from-[#3E3A4D] to-transparent -translate-y-full"></div>
 
       <div className="flex flex-col items-center order-1 md:order-2 mb-3 md:mb-0">
