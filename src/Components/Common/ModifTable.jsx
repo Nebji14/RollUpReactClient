@@ -104,20 +104,37 @@ export default function ModifierTable({ onClose, table }) {
     "Vampire: La Mascarade",
   ];
 
+  //Modification de la table
   const onSubmit = async (data) => {
     try {
+      // Si un nouvel image a été choisie, on la téléverse et on remplace data.image
       if (image) {
-        const publicUrl = await uploadImage(image);
+        const publicUrl = await uploadImage(image); // uploadService doit retourner l'URL publique
         data.image = publicUrl;
       } else {
-        data.image = table?.image;
+        // si pas de nouvelle image, on garde l'ancienne image (ou null)
+        data.image = table?.image || null;
       }
 
-      await updateTable(table.id, data);
-      toast.success("Table modifiée avec succès !");
+      const payload = {
+        ...data,
+        nbJoueurs:
+          data.nbJoueurs !== undefined ? Number(data.nbJoueurs) : undefined,
+        frequence:
+          data.frequence !== undefined ? Number(data.frequence) : undefined,
+      };
+
+      // Sécurité côté client : on n'envoie pas la propriété user (ne pas tenter de changer le propriétaire)
+      delete payload.user;
+
+      // Appel du context -> qui appelle l'API et met à jour le state global
+      await updateTable(table._id, payload);
+
+      // Confirmation visuelle, on ferme la modal
+      toast.success("Table modifiée avec succès");
       onClose();
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Erreur lors de la modification de la table");
     }
   };

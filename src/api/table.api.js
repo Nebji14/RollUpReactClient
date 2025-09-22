@@ -1,3 +1,4 @@
+// src/api/table.api.js
 import { BASE_URL } from "../utils/url";
 
 // Récupérer toutes les tables
@@ -8,7 +9,7 @@ export async function getTablesFromApi() {
       headers: {
         "Content-type": "application/json",
       },
-      credentials: "include",
+      credentials: "include", // important pour envoyer le cookie JWT
     });
 
     if (!response.ok) {
@@ -23,7 +24,7 @@ export async function getTablesFromApi() {
   }
 }
 
-// Ajouter une nouvelle table
+// Ajouter une table
 export async function addTable(values) {
   try {
     const response = await fetch(`${BASE_URL}/tables`, {
@@ -43,10 +44,11 @@ export async function addTable(values) {
     return newTable;
   } catch (error) {
     console.error(error);
+    throw error;
   }
 }
 
-//Supprimer une table
+// Supprimer une table
 export async function deleteTable(id) {
   try {
     const response = await fetch(`${BASE_URL}/tables/${id}`, {
@@ -63,5 +65,35 @@ export async function deleteTable(id) {
     return await response.json(); // message de confirmation
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+// Mettre à jour une table
+// Envoie un PUT vers /tables/:id et retourne l'objet table mis à jour.
+export async function updateTable(id, values) {
+  try {
+    const response = await fetch(`${BASE_URL}/tables/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include", // nécessaire pour le cookie JWT côté serveur
+      body: JSON.stringify(values),
+    });
+
+    if (!response.ok) {
+      // essayer de récupérer un message d'erreur renvoyé par le serveur
+      const err = await response.json().catch(() => null);
+      throw new Error(
+        err?.message || "Erreur lors de la mise à jour de la table"
+      );
+    }
+
+    const updatedTable = await response.json();
+    return updatedTable;
+  } catch (error) {
+    console.error("API updateTable:", error);
+    throw error;
   }
 }

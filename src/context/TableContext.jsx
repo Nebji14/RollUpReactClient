@@ -1,8 +1,10 @@
+// src/context/TableContext.jsx (ou .js)
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   getTablesFromApi,
   addTable as addTableApi,
   deleteTable as deleteTableApi,
+  updateTable as updateTableApi,
 } from "../api/table.api";
 import toast from "react-hot-toast";
 import { useAuth } from "./AuthContext";
@@ -14,8 +16,6 @@ export function TableProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const { userConnected } = useAuth();
-
-  console.log({ tables });
 
   // Charger les tables au montage
   useEffect(() => {
@@ -32,12 +32,11 @@ export function TableProvider({ children }) {
     fetchTables();
   }, []);
 
-  // Ajouter une table et met à jour instantanément
+  // Ajouter une table
   const addTable = async (values) => {
     try {
-      console.log("Context: Ajout d'une table...", values);
       const newTable = await addTableApi(values);
-      console.log("Context: Table reçue de l'API:", newTable);
+      // on injecte les infos utilisateur côté client pour l'affichage immédiat
       setTables((prevTables) => [
         {
           ...newTable,
@@ -54,12 +53,12 @@ export function TableProvider({ children }) {
       throw error;
     }
   };
-  //Supprimer une Table
 
+  // Supprimer une table
   const removeTable = async (id) => {
     try {
-      await deleteTableApi(id); //Appel API
-      setTables((prevTables) => prevTables.filter((t) => t._id !== id)); // mise à jour instantanée
+      await deleteTableApi(id);
+      setTables((prevTables) => prevTables.filter((t) => t._id !== id));
       toast.success("La table a été supprimée");
     } catch (error) {
       console.log(error);
@@ -67,8 +66,27 @@ export function TableProvider({ children }) {
     }
   };
 
+  const updateTable = async (id, values) => {
+    try {
+      // Appel API pour mettre à jour la table
+      const updated = await updateTableApi(id, values);
+
+      //récupérer la liste complète depuis l'API pour être sûr que le state soit à jour
+      const refreshed = await getTablesFromApi();
+      setTables(refreshed);
+
+      return updated;
+    } catch (error) {
+      console.error(error);
+
+      throw error;
+    }
+  };
+
   return (
-    <TableContext.Provider value={{ tables, addTable, removeTable, loading }}>
+    <TableContext.Provider
+      value={{ tables, addTable, removeTable, updateTable, loading }}
+    >
       {children}
     </TableContext.Provider>
   );
