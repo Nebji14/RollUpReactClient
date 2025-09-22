@@ -1,22 +1,23 @@
 import { useState } from "react";
 import Button from "./Button";
 import { useTable } from "../../context/TableContext";
+import ModifierTable from "./ModifTable";
 
 export default function TableCard({
   table,
-  buttonText,
-  onButtonClick,
-  isCoinDesMj,
+  showJoin = false, // <- afficher bouton rejoindre/quitter ?
+  showEdit = false, // <- afficher bouton modifier ?
+  showDelete = false, // <- afficher bouton supprimer ?
 }) {
   const [isJoined, setIsJoined] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false); // contrôle la modal
-
-  const handleToggle = () => {
-    if (onButtonClick) onButtonClick(table);
-    else setIsJoined(!isJoined);
-  };
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const { removeTable } = useTable();
+
+  const handleToggle = () => {
+    setIsJoined(!isJoined);
+  };
 
   const handleDelete = () => {
     removeTable(table._id);
@@ -78,54 +79,69 @@ export default function TableCard({
 
           {/* BOUTONS */}
           <div className="mt-4 flex flex-col sm:flex-row gap-2">
-            <Button
-              color="secondary"
-              text={
-                buttonText ||
-                (isJoined ? "Quitter la table" : "Rejoindre la table")
-              }
-              className="w-full sm:w-auto"
-              onClick={handleToggle}
-            />
+            {showJoin && (
+              <Button
+                color="secondary"
+                text={isJoined ? "Quitter la table" : "Rejoindre la table"}
+                className="w-full sm:w-auto"
+                onClick={handleToggle}
+              />
+            )}
 
-            {isCoinDesMj && (
+            {showEdit && (
+              <Button
+                color="secondary"
+                text="Modifier la table"
+                className="w-full sm:w-auto"
+                onClick={() => setShowEditModal(true)}
+              />
+            )}
+
+            {showDelete && (
               <Button
                 color="secondary"
                 text="Supprimer cette table"
                 className="w-full sm:w-auto"
-                onClick={() => setShowConfirm(true)} // ouvre la modal
+                onClick={() => setShowConfirm(true)}
               />
             )}
           </div>
         </div>
       </div>
 
-      {/* MODAL DE CONFIRMATION */}
+      {/* MODAL MODIFIER */}
+      {showEditModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-[10000]">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setShowEditModal(false)}
+          ></div>
+          <div className="relative z-50">
+            <ModifierTable
+              table={table}
+              onClose={() => setShowEditModal(false)}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* MODAL SUPPRESSION */}
       {showConfirm && (
-        <div className="fixed rounded-[20px] inset-0 flex items-center justify-center z-[10000]">
-          {/* Arrière-plan flouté */}
+        <div className="fixed inset-0 flex items-center justify-center z-[10000]">
           <div
             className="absolute inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setShowConfirm(false)}
           ></div>
-
-          {/* Contenu modal */}
           <div className="relative bg-[#E9E4DA] text-[#111827] rounded-lg shadow-xl p-6 w-full max-w-md z-50">
             <p className="mb-4 text-center font-semibold text-lg">
               Êtes-vous sûr de vouloir supprimer la table "
               <span className="font-bold">{table.titre}</span>" ?
             </p>
             <div className="flex justify-center gap-4">
-              <Button
-                color="secondary"
-                text="Oui"
-                className="w-full sm:w-auto"
-                onClick={handleDelete}
-              />
+              <Button color="secondary" text="Oui" onClick={handleDelete} />
               <Button
                 color="secondary"
                 text="Non"
-                className="w-full sm:w-auto"
                 onClick={() => setShowConfirm(false)}
               />
             </div>

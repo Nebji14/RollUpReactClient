@@ -84,12 +84,8 @@ export default function LeCoinDesMj() {
                     <TableCard
                       key={table._id}
                       table={table}
-                      isCoinDesMj={true} //fait apparaitre le btn Supprimer
-                      buttonText="Modifier la table"
-                      // onButtonClick={() => {
-                      //   //console.log("Modifier la table :", t);
-                      //   // Ouvre la modale de modification
-                      // }}
+                      showEdit={true} //  affiche le bouton "Modifier la table"
+                      showDelete={true} //  affiche le bouton "Supprimer cette table"
                     />
                   ))
               ) : (
