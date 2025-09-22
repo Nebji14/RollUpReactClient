@@ -9,9 +9,8 @@ import AshParticles from "../Components/Common/ParticlesBackground";
 import Footer from "../Components/Common/Footer";
 import { NavLink } from "react-router-dom";
 
-// ============================
 // Composant InteractiveD20
-// ============================
+
 function InteractiveD20() {
   const modelRef = useRef();
   const [dragging, setDragging] = useState(false);
@@ -86,9 +85,8 @@ function InteractiveD20() {
   );
 }
 
-// ============================
 // Composant HomePage
-// ============================
+
 export default function HomePage() {
   const [showTooltip, setShowTooltip] = useState(true);
 
