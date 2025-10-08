@@ -1,97 +1,61 @@
-// src/context/TableContext.jsx (ou .js)
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  getTablesFromApi,
-  addTable as addTableApi,
-  deleteTable as deleteTableApi,
-  updateTable as updateTableApi,
-} from "../api/table.api";
-import toast from "react-hot-toast";
-import { useAuth } from "./AuthContext";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import { getTablesFromApi, searchTables } from "../api/table.api";
 
 const TableContext = createContext();
 
 export function TableProvider({ children }) {
   const [tables, setTables] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  const { userConnected } = useAuth();
-
-  // Charger les tables au montage
+  // Charger toutes les tables au démarrage
   useEffect(() => {
-    const fetchTables = async () => {
-      try {
-        const data = await getTablesFromApi();
-        setTables(data);
-      } catch (error) {
-        console.error("Erreur lors du chargement des tables :", error);
-      } finally {
-        setLoading(false);
-      }
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await getTablesFromApi();
+      setTables(data);
+      setLoading(false);
     };
-    fetchTables();
+    fetchData();
   }, []);
 
-  // Ajouter une table
-  const addTable = async (values) => {
-    try {
-      const newTable = await addTableApi(values);
-      // on injecte les infos utilisateur côté client pour l'affichage immédiat
-      setTables((prevTables) => [
-        {
-          ...newTable,
-          user: {
-            ...(newTable.user || {}),
-            pseudo: userConnected.pseudo,
-            email: userConnected.email,
-          },
-        },
-        ...prevTables,
-      ]);
-    } catch (error) {
-      console.error("Context: Erreur lors de l'ajout:", error);
-      throw error;
-    }
+  // Lancer une recherche filtrée
+  const rechercherTables = async (filters) => {
+    setLoading(true);
+    const data = await searchTables(filters);
+    setTables(data);
+    setLoading(false);
   };
 
-  // Supprimer une table
-  const removeTable = async (id) => {
-    try {
-      await deleteTableApi(id);
-      setTables((prevTables) => prevTables.filter((t) => t._id !== id));
-      toast.success("La table a été supprimée");
-    } catch (error) {
-      console.log(error);
-      toast.error("Erreur lors de la suppression");
-    }
+  // Gérer le bouton "Rejoindre"
+  const rejoindreTable = (id) => {
+    setTables((prev) =>
+      prev.map((t) => (t._id === id ? { ...t, isJoined: true } : t))
+    );
   };
 
-  const updateTable = async (id, values) => {
-    try {
-      // Appel API pour mettre à jour la table
-      const updated = await updateTableApi(id, values);
-
-      //récupérer la liste complète depuis l'API pour être sûr que le state soit à jour
-      const refreshed = await getTablesFromApi();
-      setTables(refreshed);
-
-      return updated;
-    } catch (error) {
-      console.error(error);
-
-      throw error;
-    }
+  // Gérer le bouton "Quitter"
+  const quitterTable = (id) => {
+    setTables((prev) =>
+      prev.map((t) => (t._id === id ? { ...t, isJoined: false } : t))
+    );
   };
 
   return (
     <TableContext.Provider
-      value={{ tables, addTable, removeTable, updateTable, loading }}
+      value={{
+        tables,
+        loading,
+        rechercherTables,
+        rejoindreTable,
+        quitterTable,
+      }}
     >
       {children}
     </TableContext.Provider>
   );
 }
 
-export function useTable() {
+// Hook personnalisé pour consommer le contexte
+export const useTable = () => {
   return useContext(TableContext);
-}
+};

@@ -5,9 +5,9 @@ import ModifierTable from "./ModifTable";
 
 export default function TableCard({
   table,
-  showJoin = false, // <- afficher bouton rejoindre/quitter ?
-  showEdit = false, // <- afficher bouton modifier ?
-  showDelete = false, // <- afficher bouton supprimer ?
+  showJoin = false, // afficher bouton rejoindre/quitter
+  showEdit = false, // afficher bouton modifier
+  showDelete = false, // afficher bouton supprimer
 }) {
   const [isJoined, setIsJoined] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);

@@ -6,15 +6,18 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
+import { BASE_URL } from "../../utils/url";
 
-export default function Recherche({ onClose }) {
+export default function Recherche({ onClose, onSearch }) {
   const [openMenu, setOpenMenu] = useState(null);
 
+  // États pour les champs
+  const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("Sélectionner");
   const [niveau, setNiveau] = useState("Sélectionner");
   const [systeme, setSysteme] = useState("Sélectionner");
-  const [frequence, setFrequence] = useState(3);
 
+  // Options de sélection
   const genres = [
     "Fantasy",
     "Sci-Fi",
@@ -33,9 +36,44 @@ export default function Recherche({ onClose }) {
     "Vampire: La Mascarade",
   ];
 
+  // Fonction de recherche (appel API)
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/tables`, {
+        method: "GET",
+        headers: { "Content-type": "application/json" },
+        credentials: "include",
+      });
+
+      if (!response.ok) throw new Error("Erreur lors du chargement des tables");
+      const data = await response.json();
+
+      // Filtrage partiel (insensible à la casse)
+      const filtered = data.filter((table) => {
+        const matchSearch =
+          !search.trim() ||
+          table.titre.toLowerCase().includes(search.toLowerCase()) ||
+          table.description?.toLowerCase().includes(search.toLowerCase());
+
+        const matchGenre = genre === "Sélectionner" || table.genre === genre;
+        const matchNiveau =
+          niveau === "Sélectionner" || table.niveau === niveau;
+        const matchSysteme =
+          systeme === "Sélectionner" || table.systeme === systeme;
+
+        return matchSearch && matchGenre && matchNiveau && matchSysteme;
+      });
+
+      if (onSearch) onSearch(filtered);
+    } catch (error) {
+      console.error("Erreur recherche:", error);
+      alert("Erreur lors de la recherche des tables.");
+    }
+  };
+
   return (
     <div className="relative w-full max-w-md sm:max-w-2xl p-6 sm:p-8 rounded-2xl shadow-xl bg-[#F2EEE8] text-[#111827] flex flex-col gap-5 sm:gap-6 items-center">
-      {/* Croix pour fermer */}
+      {/* Bouton de fermeture */}
       <button
         onClick={onClose}
         aria-label="Fermer"
@@ -49,14 +87,16 @@ export default function Recherche({ onClose }) {
         Chercher une Table de Jeu
       </h2>
 
-      {/* Barre de recherche */}
+      {/* Barre de recherche texte */}
       <div className="w-full sm:w-[80%] flex flex-col gap-2">
         <label className="font-bold mb-1 block text-sm sm:text-base">
           Recherche
         </label>
         <input
           type="text"
-          placeholder="Recherche..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Nom, description..."
           className="h-10 sm:h-12 px-4 rounded-full bg-[#E9E4DA] border border-[#111827] shadow-[0_5px_5px_rgba(0,0,0,0.5)] focus:outline-none text-sm sm:text-base"
         />
       </div>
@@ -160,29 +200,12 @@ export default function Recherche({ onClose }) {
         )}
       </div>
 
-      {/* FREQUENCE */}
-      <div className="w-full sm:w-[80%]">
-        <label className="block font-bold mb-1 sm:mb-2 text-sm sm:text-base">
-          Fréquence ({frequence} / semaine)
-        </label>
-        <input
-          type="range"
-          min="1"
-          max="7"
-          value={frequence}
-          onChange={(e) => setFrequence(e.target.value)}
-          className="w-full accent-[#3E3A4D] h-2 sm:h-3"
-        />
-        <div className="text-xs sm:text-sm mt-1">
-          1 jour — 7 jours / semaine
-        </div>
-      </div>
-
-      {/* Bouton final */}
+      {/* BOUTON FINAL */}
       <Button
         color="secondary"
         text="Lancer une recherche"
         className="w-full sm:w-auto h-10 sm:h-12 py-2 rounded-full shadow-[0_5px_5px_rgba(0,0,0,0.5)]"
+        onClick={handleSearch}
       />
     </div>
   );
